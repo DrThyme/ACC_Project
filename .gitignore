@@ -1,0 +1,32 @@
+# Specific files #
+###################
+ACC-Course-openrc.sh
+cloud.key.pub
+cloud.key
+
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+*.out
+*.beam
+
+
+# OS/Emacs/Vim generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+\#*\#
+.\#*
+*~
