@@ -66,9 +66,9 @@ for (var i=1; i <= 20; i++)
 
 ## Authors
 Group 1:
-Andreas Gäwerth
-Tim Josefsson
-Adam Ruul
+* Andreas Gäwerth
+* Tim Josefsson
+* Adam Ruul
 
 
 ## Contributing
