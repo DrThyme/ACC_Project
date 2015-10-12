@@ -3,9 +3,9 @@
 
 > A group project for the Applied Cloud Computing course at Uppsala University
 
-Using a 2D NavierStokes solver based on the Finite Element Method (FEM), and
-implemented using the open source framework FEniCS/Dolfin together
-with the Mesh generation software Gmsh, We are developing a cloudbased
+Using a [2D NavierStokes solver](https://github.com/TDB-UU/naca_airfoil) based on the Finite Element Method (FEM), and
+implemented using the open source framework [FEniCS/Dolfin](http://fenicsproject.org/) together
+with the Mesh generation software [Gmsh](http://geuz.org/gmsh/), We are developing a cloudbased
 solution and service for conducting experiments to assess the influence of the angle of attack on the lift
 force (for different values of the other inputs to the program).
 
