@@ -46,7 +46,7 @@ cd naca_airfoil/navier_stokes_solver/
 export LC_ALL=C
 ./airfoil  10 0.0001 10. 1 ../xml/r0a0n200.xml
 ```
-> Some comment about dependencies
+> In your userdata-file...Clone this repo
 
 ## Examples
 
