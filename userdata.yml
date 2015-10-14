@@ -1,0 +1,15 @@
+#cloud-config
+
+package_update: true
+package_upgrade: true
+
+packages:
+    - cowsay
+runcmd:
+    - git clone https://github.com/DrThyme/ACC_Project.git
+    - mv ACC_Project home/ubuntu/ACC_Project
+    - mkdir /home/ubuntu/ACC_Project/naca_airfoil/geo
+    - mkdir /home/ubuntu/ACC_Project/naca_airfoil/msh
+    - mkdir /home/ubuntu/ACC_Project/naca_airfoil/xml
+    - chmod -R 777 /home/ubuntu/ACC_Project
+    - export LC_ALL=C
