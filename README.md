@@ -23,12 +23,18 @@ git clone --bare https://github.com/DrThyme/ACC_Project.git
 
 > Alternatively you can [download as .zip](https://github.com/DrThyme/ACC_Project/archive/master.zip)!
 
-#### Build
+#### USAGE
 
-First run this
+Create instance based on image 'PROJECT1_BASE' and ssh into it.
 
 ```bash
-some commands here
+cd ACC_Project/naca_airfoil/
+./run.sh 0 30 10 200 3
+cd ..
+./convert_to_xml.sh /home/ubuntu/ACC_Project/naca_airfoil/msh
+cd naca_airfoil/navier_stokes_solver/
+export LC_ALL=C
+./airfoil  10 0.0001 10. 1 ../xml/r0a0n200.xml
 ```
 > Some comment about dependencies
 
