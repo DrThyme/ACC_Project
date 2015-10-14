@@ -27,6 +27,16 @@ git clone --bare https://github.com/DrThyme/ACC_Project.git
 
 Create instance based on image 'PROJECT1_BASE' and ssh into it.
 
+The 'PROJECT1_BASE'-image has the following installed:
+* fenics
+* git
+* pip
+* rabbitmq-server
+* gmsh
+* celery
+* Flask
+
+
 ```bash
 cd ACC_Project/naca_airfoil/
 ./run.sh 0 30 10 200 3
