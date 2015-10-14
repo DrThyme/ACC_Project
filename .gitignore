@@ -3,6 +3,7 @@
 ACC-Course-openrc.sh
 cloud.key.pub
 cloud.key
+cloud_proj.key
 
 
 # Compiled source #
