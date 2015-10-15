@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<title>Input values</title>
+</head>
+<body>
+
+<div data-role="page">
+	<!--
+  <div data-role="main" class="ui-content">
+    <form method="post" action="demoform.asp">
+      <label for="points">Max angles:</label>
+      <input type="range" name="maxAngle" id="maxAngle" value="135" min="0" max="180">
+    </form>
+  </div>
+  <br />
+    <div data-role="main" class="ui-content">
+    <form method="post" action="demoform.asp">
+      <label for="points">Min angles:</label>
+	  <input type="range" name="minAngle" id="minAngle" value="45" min="0" max="180">
+    </form>
+  </div>
+  !-->
+	<br />
+    <div data-role="main" class="ui-content">
+    <form method="post" action=".">
+      <label for="points">Max angle:</label>
+      <input type="range" name="maxAngle" id="maxAngle" value="135" min="0" max="180">
+      <label for="points">Min angle:</label>
+	  <input type="range" name="minAngle" id="minAngle" value="45" min="0" max="180">
+      <label for="points">Number of samples:</label>
+      <input type="number" name="numSamples" id="numSamples" value="1" min="1">
+      <input type="submit" name="isReadyButton" value="Start!">
+    </form>
+  </div>
+  
+</div>
+
+</body>
+</html>

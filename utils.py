@@ -3,6 +3,8 @@ from celery import Celery, group, subtask
 import sys
 import swiftclient.client
 from flask import Flask, jsonify
+from flask import request
+from flask import render_template
 import time
 import json
 
@@ -90,9 +92,23 @@ def calc_lift_force(angle):
 #   ---REST API---
 apps = Flask(__name__)
 
+<<<<<<< HEAD
+@app.route('/')
+def my_form():
+    return render_template("airfoil.html")
+
+
+@apps.route('/', methods=['POST'])
+=======
 @apps.route('/start/<int:arg1>/<int:arg2>/<int:arg3>', methods=['GET'])
+>>>>>>> e7a998e5b7931f2a886adf7eae9c9f786916051f
 def start():
-    main(arg1,arg2,arg3)
+    maxAngle = request.form['maxAngle']
+    minAngle = request.form['minAngle']
+    numSamples = request.form['numSamples']
+
+    #TODO Check if the max/min/samples are correct for input to main.
+    #main(maxAngle,minAngle,numSamples)
     return "Process are now running."
 
 
