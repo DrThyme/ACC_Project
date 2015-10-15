@@ -48,6 +48,9 @@ def input_form_user(min_ang,max_ang,nr):
     return angle_list
 
 
+def main(min_ang,max_ang,nr):
+    angle_list = input_form_user(min_ang,max_ang,nr)
+    create_tasks(angle_list)
 
 
 
@@ -85,7 +88,23 @@ def calc_lift_force(angle):
 
     
 
+#   ---REST API---
+apps = Flask(__name__)
+
+@apps.route('/result/<int:arg1>/<int:arg2>/<int:arg3>', methods=['GET'])
+def start():
+    main(arg1,arg2,arg3)
+    return "Process are now running."
+
+
+@apps.route('/result', methods=['GET'])
+def getResult():
+    return "The tasks have all been completed. And the results are stored in the container."
+  
+
+if __name__ == '__main__':
     
+    apps.run(host='0.0.0.0',debug=True)
         
     
     
