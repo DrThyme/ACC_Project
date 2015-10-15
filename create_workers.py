@@ -215,19 +215,12 @@ except Exception as e:
 
 
 
+
 worker_names = []
-
-#with open('userdata.yml', 'r') as userdata:
-    # SET TO NUMBER OF WORKERS
-
 wimage = nc.images.find(name='PROJECT1_BASE')
 for x in range (0,NR_OF_WORKERS):
     worker_name = "Adamzon-Worker-"+str(x)
     worker_names.append(worker_name)
-    if not nc.keypairs.findall(name=key_pair_name):
-        with open(os.path.expanduser(SSH_PUB_KEY_PATH)) as ffpubkey:
-            print "NO KEYPAIR FOR WORKER....CREATING"
-            nc.keypairs.create(name=key_pair_name, public_key=ffpubkey.read())
     with open(PATH_TO_WORKER_USERDATA, 'r') as udata:
         instance = nc.servers.create(name=worker_name, image=wimage, flavor=flavor, key_name=key_pair_name,userdata=udata)
     status = instance.status

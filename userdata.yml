@@ -6,6 +6,7 @@ package_upgrade: true
 packages:
     - cowsay
 runcmd:
+    - chmod -R 777 /home/ubuntu
     - git clone https://github.com/DrThyme/ACC_Project.git
     - mv ACC_Project home/ubuntu/ACC_Project
     - mkdir /home/ubuntu/ACC_Project/naca_airfoil/geo
@@ -13,3 +14,4 @@ runcmd:
     - mkdir /home/ubuntu/ACC_Project/naca_airfoil/xml
     - chmod -R 777 /home/ubuntu/ACC_Project
     - export LC_ALL=C
+    - mkdir bump

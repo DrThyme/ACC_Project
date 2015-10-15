@@ -86,12 +86,11 @@ def calc_lift_force(angle):
     (av_lift,av_drag) = avrage_result(drag_limit.m)
     return (angle,av_lift,av_drag)
 
-    
 
 #   ---REST API---
 apps = Flask(__name__)
 
-@apps.route('/result/<int:arg1>/<int:arg2>/<int:arg3>', methods=['GET'])
+@apps.route('/start/<int:arg1>/<int:arg2>/<int:arg3>', methods=['GET'])
 def start():
     main(arg1,arg2,arg3)
     return "Process are now running."
