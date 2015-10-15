@@ -10,6 +10,6 @@ for f in *.msh; do
 done
 echo "*** Moving files ***"
 for x in *.xml; do 
-    mv "$x" ../xml
+    mv "$x"../../xml
 done
 

@@ -1,0 +1,50 @@
+#cloud-config
+
+package_update: true
+package_upgrade: true
+
+packages:
+    - git
+    - python-pip
+    - rabbitmq-server
+    - python-swiftclient
+runcmd:
+    - touch /var/lib/cloud/instance/locale-check.skip
+    - pip install Flask
+    - pip install celery
+    - pip install python-swiftclient
+    - pip install flower
+    - git clone https://github.com/DrThyme/ACC_Project.git
+    - mv ACC_Project home/ubuntu/ACC_Project
+
+    - rabbitmqctl add_user brokerzon hej123
+    - rabbitmqctl add_vhost cluuster
+    - rabbitmqctl set_permissions -p cluuster brokerzon ".*" ".*" ".*"
+
+    - rabbitmqctl add_user workerzon0 hej123
+    - rabbitmqctl set_permissions -p cluuster workerzon0 ".*" ".*" ".*"
+
+    - rabbitmqctl add_user workerzon1 hej123
+    - rabbitmqctl set_permissions -p cluuster workerzon1 ".*" ".*" ".*"
+
+    - rabbitmqctl add_user workerzon2 hej123
+    - rabbitmqctl set_permissions -p cluuster workerzon2 ".*" ".*" ".*"
+
+    - rabbitmqctl add_user workerzon3 hej123
+    - rabbitmqctl set_permissions -p cluuster workerzon3 ".*" ".*" ".*"
+
+    - rabbitmqctl add_user workerzon4 hej123
+    - rabbitmqctl set_permissions -p cluuster workerzon4 ".*" ".*" ".*"
+
+    - rabbitmqctl add_user workerzon5 hej123
+    - rabbitmqctl set_permissions -p cluuster workerzon5 ".*" ".*" ".*"
+
+    - rabbitmqctl add_user workerzon6 hej123
+    - rabbitmqctl set_permissions -p cluuster workerzon6 ".*" ".*" ".*"
+
+    - rabbitmqctl add_user workerzon7 hej123
+    - rabbitmqctl set_permissions -p cluuster workerzon7 ".*" ".*" ".*"
+
+    - rabbitmqctl restart
+    - chmod -R 777 /home/ubuntu/ACC_Project
+

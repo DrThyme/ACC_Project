@@ -1,0 +1,75 @@
+import os
+from celery import Celery, group, subtask
+import sys
+import swiftclient.client
+from flask import Flask, jsonify
+import time
+import json
+import glob
+
+
+
+"""
+python worker_tasks <user_name> <password> <
+
+"""
+
+uname = "U_NAME"
+broker_ip = "BROOKER_IP_TEMP"
+passw = "P_W"
+
+celery = Celery('tasks', backend='amqp',
+                      broker='amqp://W_NAME:hej123@'+broker_ip+'/cluuster')
+
+bucket_name = "GROUP1_RESULT"
+
+
+
+config = {'user':uname, 
+          'key':passw,
+          'tenant_name':'ACC-Course',
+          'authurl':'http://smog.uppmax.uu.se:5000/v2.0'}
+
+conn = swiftclient.client.Connection(auth_version=2, **config)
+
+
+@celery.task
+def calc_lift_force(angle):
+    # What shell-command-method should we use?
+    # http://stackoverflow.com/questions/89228/calling-an-external-command-in-python
+    
+    # SHOULD WE WAIT FOR COMMANDS TO EXECUTE BEFORE RUNNING THE NEXT ONE?
+    os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/;./run.sh +"angle+" "+angle+" 1 200 0")
+    os.system("cd /home/ubuntu/ACC_Project/;./convert_to_xml naca_airfoil/msh/")
+
+    # *GET LIST OF FILENAME*
+    os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;./airfoil 10 0.0001 10. 1 ../xml/"+filename)
+    upload_result(angle,bucket_name)
+    
+
+    # Function call Via shell or imported python-function?
+
+
+
+def upload_result(angle,bucket):
+    """
+    Uploads the result folder to the bucket 'bucket'.... prepends the angle  'angle' used when solving the equation, to each filename
+
+    This should be done at every worker 
+    """
+    directory="/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/*"
+    result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
+    for fil in result_folder:
+        filename, file_extension = os.path.splitext(str(item))
+        xw=filename.replace(pwd+"/","")
+        filenamee = xw+str(file_extension)
+        with open(fil, 'r') as res_file:
+            conn.put_object(bucket_name, str(angle)+"/"+str(filenamee),
+                            contents= res_file.read(),
+                            content_type='text/plain')
+
+
+
+
+
+
