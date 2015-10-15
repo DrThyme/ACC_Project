@@ -49,8 +49,14 @@ string=sed -e '$!d' /var/log/cloud-init-output.log; if [[ $string == *"My long"*
 
 NR_OF_WORKERS = 2
 BASE_WORKER_NAME = "G1-WORKER-"
-SSH_PUB_KEY_PATH = ""
-SSH_PRIV_KEY_PATH = "/Users/adamruul/datormoln/cloud.key"
+SSH_PUB_KEY_PATH = "/Users/adamruul/datormoln/projekt/cloud.key.pub"
+SSH_PRIV_KEY_PATH = "/Users/adamruul/datormoln/projekt/cloud.key"
+
+B_SSH_PUB_KEY_PATH = "/Users/adamruul/datormoln/projekt/cloud.key.pub"
+B_SSH_PRIV_KEY_PATH = "/Users/adamruul/datormoln/projekt/cloud.key"
+
+key_pair_name = "addekey"
+
 BROKER_IMAGE = ""
 WORKER_IMAGE = ""
 KEYPAIR_NAME = ""
@@ -107,13 +113,16 @@ def start_workers(bro_ip,ip_list):
     for ip in ip_list:
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        sshkey = paramiko.RSAKey.from_private_key_file(SSH_PRIV_KEY_PATH)
+        if ip == bro_ip:
+            sshkey = paramiko.RSAKey.from_private_key_file(B_SSH_PRIV_KEY_PATH)
+        else:
+            sshkey = paramiko.RSAKey.from_private_key_file(SSH_PRIV_KEY_PATH)
         try:
             if ip == bro_ip:
                 cmd = "cd /home/ubuntu/ACC_Project;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw) + " brokerzon "+str(openstack_usrname)
             else:
                 worker_name = "workerzon"+str(x)
-                cmd = "cd /home/ubuntu/tweet_ass/task2/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)+";celery worker -l info -A worker_tasks"
+                cmd = "cd /home/ubuntu/ACC_Peoject/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)+";celery worker -l info -A worker_tasks"
                 x+=1
             ssh.connect(str(ip), username='ubuntu', pkey=sshkey)
             print "*** SSH Connection Established ***"
@@ -134,7 +143,7 @@ def start_broker(bro_ip):
     cmd = "cd /home/ubuntu/ACC_Project/;celery flower -A worker_tasks --address=0.0.0.0 --port=5000"
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    sshkey = paramiko.RSAKey.from_private_key_file(SSH_PRIV_KEY_PATH)
+    sshkey = paramiko.RSAKey.from_private_key_file(B_SSH_PRIV_KEY_PATH)
     try:
         ssh.connect(str(bro_ip), username='ubuntu', pkey=sshkey)
         print "*** SSH Connection Established ***"
@@ -156,9 +165,10 @@ nc = Client('2',**config)
 
 
 # Set parameters
-if not nc.keypairs.findall(name="addekeyX"):
-    with open(os.path.expanduser('/Users/adamruul/datormoln/cloud.key')) as fpubkey:
-        nc.keypairs.create(name="addekeyX", public_key=fpubkey.read())
+if not nc.keypairs.findall(name=key_pair_name):
+    with open(os.path.expanduser(B_SSH_PUB_KEY_PATH)) as fpubkey:
+        print "NO KEYPAIR FOR BROKER...CREATING"
+        nc.keypairs.create(name=key_pair_name, public_key=fpubkey.read())
 image = nc.images.find(name='PROJECT1_BASE') # RuulSnap is also good
 flavor = nc.flavors.find(name="m1.medium")
 
@@ -166,7 +176,7 @@ flavor = nc.flavors.find(name="m1.medium")
 
 # Create instance
 with open(PATH_TO_BROKER_USERDATA, 'r') as userdata:
-    instance = nc.servers.create(name="Adamzon-Broker", image=image, flavor=flavor, key_name="addekeyX",userdata=userdata)
+    instance = nc.servers.create(name="Adamzon-Broker", image=image, flavor=flavor, key_name=key_pair_name,userdata=userdata)
 status = instance.status
 while status == 'BUILD':
     time.sleep(3)
@@ -206,14 +216,20 @@ except Exception as e:
 
 
 worker_names = []
-udata = open(PATH_TO_WORKER_USERDATA, 'r')
+
 #with open('userdata.yml', 'r') as userdata:
     # SET TO NUMBER OF WORKERS
+
 wimage = nc.images.find(name='PROJECT1_BASE')
 for x in range (0,NR_OF_WORKERS):
     worker_name = "Adamzon-Worker-"+str(x)
     worker_names.append(worker_name)
-    instance = nc.servers.create(name=worker_name, image=wimage, flavor=flavor, key_name="addekeyX",userdata=udata)
+    if not nc.keypairs.findall(name=key_pair_name):
+        with open(os.path.expanduser(SSH_PUB_KEY_PATH)) as ffpubkey:
+            print "NO KEYPAIR FOR WORKER....CREATING"
+            nc.keypairs.create(name=key_pair_name, public_key=ffpubkey.read())
+    with open(PATH_TO_WORKER_USERDATA, 'r') as udata:
+        instance = nc.servers.create(name=worker_name, image=wimage, flavor=flavor, key_name=key_pair_name,userdata=udata)
     status = instance.status
     while status == 'BUILD':
         time.sleep(5)

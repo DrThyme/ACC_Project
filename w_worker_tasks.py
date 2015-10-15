@@ -37,13 +37,27 @@ conn = swiftclient.client.Connection(auth_version=2, **config)
 def calc_lift_force(angle):
     # What shell-command-method should we use?
     # http://stackoverflow.com/questions/89228/calling-an-external-command-in-python
+    """
+    THIS WORKS IF LC_ALL IS EXPORTED
+    """
     
-    # SHOULD WE WAIT FOR COMMANDS TO EXECUTE BEFORE RUNNING THE NEXT ONE?
-    os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/;./run.sh +"angle+" "+angle+" 1 200 0")
-    os.system("cd /home/ubuntu/ACC_Project/;./convert_to_xml naca_airfoil/msh/")
+    angle = "3"
 
+    os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/;./run.sh "+angle+" "+angle+" 1 200 0")
+    os.system("cd /home/ubuntu/ACC_Project/;./convert_to_xml.sh naca_airfoil/msh/")
+
+    directory="/home/ubuntu/ACC_Project/naca_airfoil/xml/*"
+    result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
+    
+    
     # *GET LIST OF FILENAME*
-    os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;./airfoil 10 0.0001 10. 1 ../xml/"+filename)
+    
+    for fil in result_folder:
+        filename, file_extension = os.path.splitext(str(fil))
+        os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;./airfoil 10 0.0001 10. 1 "+str(fil))
+
+
+    # TODO: UPLOAD ALL FILES
     upload_result(angle,bucket_name)
     
 
