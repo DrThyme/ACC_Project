@@ -71,6 +71,23 @@ def upload_result(angle,bucket):
 
     This should be done at every worker 
     """
+    
+    config = {'user':os.environ['OS_USERNAME'], 
+          'key':os.environ['OS_PASSWORD'],
+          'tenant_name':os.environ['OS_TENANT_NAME'],
+          'authurl':os.environ['OS_AUTH_URL']}
+    
+    bucket_name = "G1_Project_result"
+    (response, bucket_list) = conn.get_account()
+    for bucket in bucket_list:
+        if bucket['name'] == bucket_name:
+            break
+    else:
+        conn.put_container(bucket_name)
+    
+    
+
+    
     directory="/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/*"
     result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
     for fil in result_folder:
