@@ -70,7 +70,7 @@ def create_tasks(angle_list):
 
 
 
-
+"""
 @celery.task
 def calc_lift_force(angle):
     # What shell-command-method should we use?
@@ -88,11 +88,11 @@ def calc_lift_force(angle):
     (av_lift,av_drag) = avrage_result(drag_limit.m)
     return (angle,av_lift,av_drag)
 
-
+"""
 #   ---REST API---
 apps = Flask(__name__)
 
-@app.route('/')
+@apps.route('/')
 def my_form():
     return render_template("airfoil.html")
 
@@ -103,9 +103,9 @@ def start():
     minAngle = request.form['minAngle']
     numSamples = request.form['numSamples']
 
-    #TODO Check if the max/min/samples are correct for input to main.
-    #main(maxAngle,minAngle,numSamples)
-    return "Process are now running."
+    
+    main(maxAngle,minAngle,numSamples)
+    return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples)
 
 
 @apps.route('/result', methods=['GET'])

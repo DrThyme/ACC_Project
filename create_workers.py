@@ -55,6 +55,7 @@ SSH_PRIV_KEY_PATH = "/Users/adamruul/datormoln/projekt/cloud.key"
 B_SSH_PUB_KEY_PATH = "/Users/adamruul/datormoln/projekt/cloud.key.pub"
 B_SSH_PRIV_KEY_PATH = "/Users/adamruul/datormoln/projekt/cloud.key"
 
+
 key_pair_name = "addekey"
 
 BROKER_IMAGE = ""
@@ -62,7 +63,6 @@ WORKER_IMAGE = ""
 KEYPAIR_NAME = ""
 PATH_TO_WORKER_USERDATA = 'userdata.yml'
 PATH_TO_BROKER_USERDATA = 'broker/userdata.yml'
-
 
 
 openstack_pw = sys.argv[2]
