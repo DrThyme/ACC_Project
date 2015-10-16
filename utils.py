@@ -92,16 +92,12 @@ def calc_lift_force(angle):
 #   ---REST API---
 apps = Flask(__name__)
 
-<<<<<<< HEAD
 @app.route('/')
 def my_form():
     return render_template("airfoil.html")
 
 
 @apps.route('/', methods=['POST'])
-=======
-@apps.route('/start/<int:arg1>/<int:arg2>/<int:arg3>', methods=['GET'])
->>>>>>> e7a998e5b7931f2a886adf7eae9c9f786916051f
 def start():
     maxAngle = request.form['maxAngle']
     minAngle = request.form['minAngle']
