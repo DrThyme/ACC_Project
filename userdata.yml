@@ -4,8 +4,15 @@ package_update: true
 package_upgrade: true
 
 packages:
-    - cowsay
+    - fenics
+    - python-swiftclient
+    - git
+    - python-pip
+    - rabbitmq-server
+    - gmsh
 runcmd:
+    - pip install celery
+    - pip install Flask
     - chmod -R 777 /home/ubuntu
     - git clone https://github.com/DrThyme/ACC_Project.git
     - mv ACC_Project home/ubuntu/ACC_Project

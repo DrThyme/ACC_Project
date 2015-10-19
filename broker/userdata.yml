@@ -4,15 +4,16 @@ package_update: true
 package_upgrade: true
 
 packages:
+    - fenics
+    - python-swiftclient
     - git
     - python-pip
     - rabbitmq-server
-    - python-swiftclient
+    - gmsh
 runcmd:
-    - touch /var/lib/cloud/instance/locale-check.skip
-    - pip install Flask
-    - pip install celery
     - pip install python-swiftclient
+    - pip install celery
+    - pip install Flask
     - pip install flower
     - git clone https://github.com/DrThyme/ACC_Project.git
     - mv ACC_Project home/ubuntu/ACC_Project
@@ -47,4 +48,5 @@ runcmd:
 
     - rabbitmqctl restart
     - chmod -R 777 /home/ubuntu/ACC_Project
+    - mkdir home/ubuntu/tmp
 

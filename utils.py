@@ -102,9 +102,9 @@ def start():
     maxAngle = request.form['maxAngle']
     minAngle = request.form['minAngle']
     numSamples = request.form['numSamples']
-
     
-    main(maxAngle,minAngle,numSamples)
+    
+    #main(maxAngle,minAngle,numSamples)
     return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples)
 
 
