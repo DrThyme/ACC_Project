@@ -27,6 +27,25 @@ def input_form_user(min_ang,max_ang,nr):
         i += incr_angle
     return angle_list
 
+
+
+config = {'user':os.environ['OS_USERNAME'], 
+          'key':os.environ['OS_PASSWORD'],
+          'tenant_name':os.environ['OS_TENANT_NAME'],
+          'authurl':os.environ['OS_AUTH_URL']}
+
+conn = swiftclient.client.Connection(auth_version=2, **config)
+
+
+# Clean up container in Swift
+(r, ol) = conn.get_container(bucket_name)
+# DELETE ALL OBJECTS
+for obj in ol:
+    conn.delete_object(bucket_name, obj['name'])
+print "All Objects deleted..."
+
+
+
 angle_list = input_form_user(0,3,3)
 tasks = [calc_lift_force.s(angle) for angle in angle_list]
 task_group = group(tasks)
@@ -40,12 +59,6 @@ while (group_result.ready() == False):
 res = group_result.get() # list of tuples: (i,av_lift,av_drag)
 print "DONE!!!!!!!"
 
-config = {'user':os.environ['OS_USERNAME'], 
-          'key':os.environ['OS_PASSWORD'],
-          'tenant_name':os.environ['OS_TENANT_NAME'],
-          'authurl':os.environ['OS_AUTH_URL']}
-
-conn = swiftclient.client.Connection(auth_version=2, **config)
 
 (response, obj_list) = conn.get_container(bucket_name)
 object_name_list = []

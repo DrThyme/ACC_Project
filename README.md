@@ -38,13 +38,11 @@ The 'PROJECT1_BASE'-image has the following installed:
 
 
 ```bash
-cd ACC_Project/naca_airfoil/
-./run.sh 0 30 10 200 3
-cd ..
-./convert_to_xml.sh /home/ubuntu/ACC_Project/naca_airfoil/msh
-cd naca_airfoil/navier_stokes_solver/
-export LC_ALL=C
-./airfoil  10 0.0001 10. 1 ../xml/r0a0n200.xml
+python cw2.py <openstack_username> <openstack_password>
+# SSH TO your broker and open flower in your broser
+cd ACC_Project
+source creds.sh
+python add_tasks.py
 ```
 > In your userdata-file...Clone this repo
 
