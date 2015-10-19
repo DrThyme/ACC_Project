@@ -10,6 +10,8 @@ import json
 import swiftclient.client
 from worker_tasks import calc_lift_force
 
+bucket_name = "G1_Project_result"
+
 def input_form_user(min_ang,max_ang,nr):
     min_angle = min_ang # 0
     max_angle = max_ang # 30
@@ -39,7 +41,6 @@ print "DONE!!!!!!!"
 
 conn = swiftclient.client.Connection(auth_version=2, **config)
 
-conn.put_object(bucket_name, "test_object", "Hello Swift!")
 (response, obj_list) = conn.get_container(bucket_name)
 object_name_list = []
 print "================ v OBJECT NAMES: v ================"
