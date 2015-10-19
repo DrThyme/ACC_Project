@@ -45,15 +45,17 @@ my_str =
 string=sed -e '$!d' /var/log/cloud-init-output.log; if [[ $string == *"My long"* ]]; then echo "It's there!"; fi
 
 
-
 """
 
-img_name = 'Ubuntu Server 14.04 LTS (Trusty Tahr)'
+img_name = 'MOLNS_OpenStack_accpro4_1444644885'
+
+NR_OF_WORKERS = 3
+
 openstack_pw = sys.argv[2]
 openstack_usrname = sys.argv[1]
-NR_OF_WORKERS = 2
-if len(sys.argv) < 2:
-    print "Please provide a password!!!!!!!!!! python create_workers <password>"
+
+if len(sys.argv) < 3:
+    print "Please provide a password and a user name!!!!!!!!!! python create_workers <username> <password>"
     sys.exit(0)
 else:
     print(chr(27) + "[2J")
@@ -68,6 +70,10 @@ def attach_ip(cli,ins):
         if ((getattr(ip_obj,'instance_id')) == None):
             floating_ip = getattr(ip_obj, 'ip')
             break
+    else:
+        new_ip = cli.floating_ips.create(getattr(cli.floating_ip_pools.list()[0],'name'))
+        print "Created IP: " +str(new_ip)
+        floating_ip = getattr(new_ip, 'ip')
     try:
         ins.add_floating_ip(floating_ip)
         return floating_ip
@@ -77,20 +83,31 @@ def attach_ip(cli,ins):
 
 
 def start_workers(bro_ip,ip_list):
-    x = 0
+    x = 1
+    ip_aux = ip_list
+    print "IPS:"
+    for i in ip_list:
+        print str(i)
     for ip in ip_list:
+        print "RUNNING ON IP: " +str(ip)
+        
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         sshkey = paramiko.RSAKey.from_private_key_file('/Users/adamruul/datormoln/cloud.key')
+        if ip == bro_ip:
+                #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1]) + " brokerzon"
+            cmd = "cd /home/ubuntu/ACC_Project;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw) + " brokerzon "+str(openstack_usrname)
+            
+            worker_name = "brokerzon"
+        else:
+            worker_name = "workerzon"+str(x)
+            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)+";celery worker -l info -A worker_tasks"
+                #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1])+ " "+str(worker_name)+";celery worker -l info -A remote"
+            x+=1
         try:
-            if ip == bro_ip:
-                cmd = "cd /home/ubuntu/ACC_Project;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw) + " brokerzon "+str(openstack_usrname)
-            else:
-                worker_name = "workerzon"+str(x)
-                cmd = "cd /home/ubuntu/ACC_Peoject/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)+";celery worker -l info -A worker_tasks"
-                x+=1
+            
             ssh.connect(str(ip), username='ubuntu', pkey=sshkey)
-            print "*** SSH Connection Established ***"
+            print "*** SSH Connection Established to: "+str(ip)+" ***"
             #print "Running command: "+cmd
             stdin,stdout,stderr = ssh.exec_command(cmd)
             #print "Worker Started!"
@@ -98,17 +115,21 @@ def start_workers(bro_ip,ip_list):
         except Exception as e:
             print e
         print "*** Closing Connection ***"
+        print "******************************************************"
         ssh.close()
+    return ip_aux
 
         
 def start_broker(bro_ip):
+    #cmd = "cd /home/ubuntu/tweet_ass/task2/;celery flower -A remote --address=0.0.0.0 --port=5000"
+    
     cmd = "cd /home/ubuntu/ACC_Project/;celery flower -A worker_tasks --address=0.0.0.0 --port=5000"
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     sshkey = paramiko.RSAKey.from_private_key_file('/Users/adamruul/datormoln/cloud.key')
     try:
         ssh.connect(str(bro_ip), username='ubuntu', pkey=sshkey)
-        print "*** SSH Connection Established ***"
+        print "*** SSH Connection Established to: "+str(bro_ip)+" ***"
         print "*** Running command: "+cmd+" ***"
         stdin,stdout,stderr = ssh.exec_command(cmd)
     except Exception as e:
@@ -183,14 +204,15 @@ except Exception as e:
     pass
 
 worker_names = []
-udata = open('userdata.yml', 'r')
+
 #with open('userdata.yml', 'r') as userdata:
     # SET TO NUMBER OF WORKERS
 wimage = nc.images.find(name=img_name)
 for x in range (0,NR_OF_WORKERS):
     worker_name = "Adamzon-Worker-"+str(x)
     worker_names.append(worker_name)
-    instance = nc.servers.create(name=worker_name, image=wimage, flavor=flavor, key_name="l3_key_r",userdata=udata)
+    with open('userdata.yml', 'r') as udata:
+        instance = nc.servers.create(name=worker_name, image=wimage, flavor=flavor, key_name="l3_key_r", userdata=udata)
     status = instance.status
     while status == 'BUILD':
         time.sleep(5)
@@ -211,20 +233,31 @@ for wname in worker_names:
     ins = nc.servers.find(name=wname)
     ipp = attach_ip(nc,ins)
     wips.append(str(ipp))
-    ip_details.append((wname,ipp))
+    if wname != "Adamzon-Worker-0":
+        ip_details.append((wname,ipp))
+    else:
+        serverlist = nc.servers.list()
+        for server in serverlist:
+            if server.name == 'Adamzon-Worker-0':
+                server.delete()
+                print "deleted first worker!!!!!"
+                wips.remove(str(ipp))
+            else:
+                pass
     print wname + " IP:\t"+ str(ipp)
 
 
 print "*** installing packages... ***"
-wait_time = 900
-for i in range(0,90):
+wait_time = 260
+for i in range(0,26):
     time.sleep(10)
     wait_time -= 10
     print str(wait_time)+"s remaining..."
 print "*** Packages Installed!!! ***"
 
 
-start_workers(str(iip),wips)
+    
+new_ip_list = start_workers(str(iip),wips)
 start_broker(str(iip))
 
 print "================ DETAILS ======================================"

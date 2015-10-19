@@ -17,10 +17,17 @@ us_name = str(sys.argv[4])
 f = open('w_worker_tasks.py','r')
 filedata = f.read()
 f.close()
+
+
 newdata = filedata.replace("BROOKER_IP_TEMP",ip)
+
+
+
 nnewdata = newdata.replace("P_W",pw)
 nnnewdata = nnewdata.replace("W_NAME",n)
 nnnnewdata = nnnewdata.replace("U_NAME",us_name)
+
+# write file
 with open("worker_tasks.py", "wb") as fh:
         fh.write(nnnnewdata)
         fh.close()

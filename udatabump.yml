@@ -6,10 +6,8 @@ packages:
     - git
     - python-pip
     - python-swiftclient
-    - cowsay
 runcmd:
     - pip install celery
-    - pip install Flask
     - git clone https://github.com/DrThyme/ACC_Project.git /home/ubuntu/ACC_Project
     - cd /home/ubuntu/ACC_Project
     - export C_FORCE_ROOT="true"
@@ -18,4 +16,3 @@ runcmd:
     - mkdir /home/ubuntu/ACC_Project/naca_airfoil/msh
     - mkdir /home/ubuntu/ACC_Project/naca_airfoil/xml
     - chmod -R 777 /home/ubuntu/ACC_Project
-    - mkdir /home/ubuntu/tmpx

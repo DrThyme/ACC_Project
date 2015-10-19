@@ -23,7 +23,7 @@ def input_form_user(min_ang,max_ang,nr):
         i += incr_angle
     return angle_list
 
-l = input_form_user(0,3,3)
+angle_list = input_form_user(0,3,3)
 tasks = [calc_lift_force.s(angle) for angle in angle_list]
 task_group = group(tasks)
 group_result = task_group()

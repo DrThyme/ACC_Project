@@ -42,8 +42,8 @@ def calc_lift_force(angle):
     """
 
     # THIS VAR IS ONLY FOR TESTING
-    angle = "3"
-
+    
+    os.system("export LC_ALL=C")
     os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/;./run.sh "+angle+" "+angle+" 1 200 0")
     os.system("cd /home/ubuntu/ACC_Project/;./convert_to_xml.sh naca_airfoil/msh/")
 
@@ -74,10 +74,10 @@ def upload_result(angle,bucket_name):
     This should be done at every worker 
     """
     
-    config = {'user':os.environ['OS_USERNAME'],
-              'key':os.environ['OS_PASSWORD'],
-              'tenant_name':os.environ['OS_TENANT_NAME'],
-              'authurl':os.environ['OS_AUTH_URL']}
+    config = {'user':uname, 
+              'key':passw,
+              'tenant_name':'ACC-Course',
+              'authurl':'http://smog.uppmax.uu.se:5000/v2.0'}
 
     conn = swiftclient.client.Connection(auth_version=2, **config)
     angle ="0"
