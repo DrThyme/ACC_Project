@@ -34,7 +34,7 @@ conn = swiftclient.client.Connection(auth_version=2, **config)
 
 
 @celery.task
-def calc_lift_force(angle):
+def calc_lift_force(ang):
     # What shell-command-method should we use?
     # http://stackoverflow.com/questions/89228/calling-an-external-command-in-python
     """
@@ -42,7 +42,7 @@ def calc_lift_force(angle):
     """
 
     # THIS VAR IS ONLY FOR TESTING
-    
+    angle = str(ang)
     os.system("export LC_ALL=C")
     os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/;./run.sh "+angle+" "+angle+" 1 200 0")
     os.system("cd /home/ubuntu/ACC_Project/;./convert_to_xml.sh naca_airfoil/msh/")
