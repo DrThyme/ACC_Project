@@ -21,7 +21,6 @@ passw = "P_W"
 celery = Celery('tasks', backend='amqp',
                       broker='amqp://W_NAME:hej123@'+broker_ip+'/cluuster')
 
-bucket_name = "GROUP1_RESULT"
 
 
 
@@ -55,7 +54,7 @@ def calc_lift_force(ang):
     
     for fil in result_folder:
         filename, file_extension = os.path.splitext(str(fil))
-        os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;./airfoil 10 0.0001 10. 1 "+str(fil))
+        os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 "+str(fil))
 
 
     # TODO: UPLOAD ALL FILES
@@ -102,7 +101,7 @@ def upload_result(angle,bucket_name):
         filenamee = xw+str(file_extension)
 	print "*** Uploading: '" +str(fil)+"' ***"
         with open(fil, 'r') as res_file:
-            conn.put_object(bucket_name, str(angle)+"degrees/"+str(filenamee),
+            conn.put_object(bucket_name, str(angle)+"_degrees/"+str(filenamee),
                             contents= res_file.read(),
                             content_type='text/plain')
 

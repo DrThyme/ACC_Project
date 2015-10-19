@@ -7,6 +7,7 @@ from flask import request
 from flask import render_template
 import time
 import json
+import swiftclient.client
 from worker_tasks import calc_lift_force
 
 def input_form_user(min_ang,max_ang,nr):
@@ -35,3 +36,12 @@ while (group_result.ready() == False):
     time.sleep(2)
 res = group_result.get() # list of tuples: (i,av_lift,av_drag)
 print "DONE!!!!!!!"
+
+conn = swiftclient.client.Connection(auth_version=2, **config)
+
+conn.put_object(bucket_name, "test_object", "Hello Swift!")
+(response, obj_list) = conn.get_container(bucket_name)
+object_name_list = []
+print "================ v OBJECT NAMES: v ================"
+for obj in obj_list: 
+    print obj['name']
