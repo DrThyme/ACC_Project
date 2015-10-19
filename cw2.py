@@ -53,6 +53,8 @@ NR_OF_WORKERS = 3
 
 openstack_pw = sys.argv[2]
 openstack_usrname = sys.argv[1]
+PRIV_KEY_PATH = '/Users/adamruul/datormoln/cloud.key'
+PUB_KEY_PATH = '/Users/adamruul/datormoln/cloud.key.pub'
 
 if len(sys.argv) < 3:
     print "Please provide a password and a user name!!!!!!!!!! python create_workers <username> <password>"
@@ -93,7 +95,7 @@ def start_workers(bro_ip,ip_list):
         
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        sshkey = paramiko.RSAKey.from_private_key_file('/Users/adamruul/datormoln/cloud.key')
+        sshkey = paramiko.RSAKey.from_private_key_file(PRIV_KEY_PATH)
         if ip == bro_ip:
                 #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1]) + " brokerzon"
             cmd = "cd /home/ubuntu/ACC_Project;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw) + " brokerzon "+str(openstack_usrname)
@@ -126,7 +128,7 @@ def start_broker(bro_ip):
     cmd = "cd /home/ubuntu/ACC_Project/;celery flower -A worker_tasks --address=0.0.0.0 --port=5000"
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    sshkey = paramiko.RSAKey.from_private_key_file('/Users/adamruul/datormoln/cloud.key')
+    sshkey = paramiko.RSAKey.from_private_key_file(PRIV_KEY_PATH))
     try:
         ssh.connect(str(bro_ip), username='ubuntu', pkey=sshkey)
         print "*** SSH Connection Established to: "+str(bro_ip)+" ***"
@@ -148,7 +150,7 @@ nc = Client('2',**config)
 
 # Set parameters
 if not nc.keypairs.findall(name="l3_key_r"):
-    with open(os.path.expanduser('/Users/adamruul/datormoln/cloud.key.pub')) as fpubkey:
+    with open(os.path.expanduser(PUB_KEY_PATH)) as fpubkey:
         nc.keypairs.create(name="l3_key_r", public_key=fpubkey.read())
 image = nc.images.find(name=img_name) # RuulSnap is also good
 flavor = nc.flavors.find(name="m1.medium")
