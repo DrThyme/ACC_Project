@@ -23,6 +23,7 @@ def input_form_user(min_ang,max_ang,nr):
     angle_list = []
     while i < max_angle:
         angle_list.append(i)
+        print "adding angle "+ str(i)
         i += incr_angle
     return angle_list
 
@@ -38,6 +39,11 @@ while (group_result.ready() == False):
     time.sleep(2)
 res = group_result.get() # list of tuples: (i,av_lift,av_drag)
 print "DONE!!!!!!!"
+
+config = {'user':os.environ['OS_USERNAME'], 
+          'key':os.environ['OS_PASSWORD'],
+          'tenant_name':os.environ['OS_TENANT_NAME'],
+          'authurl':os.environ['OS_AUTH_URL']}
 
 conn = swiftclient.client.Connection(auth_version=2, **config)
 

@@ -59,7 +59,7 @@ def calc_lift_force(ang):
 
     # TODO: UPLOAD ALL FILES
     bucket_name = "G1_Project_result"
-    upload_result(angle,bucket_name)
+    upload_result(ang,bucket_name)
     
 
     # Function call Via shell or imported python-function?
@@ -79,7 +79,7 @@ def upload_result(angle,bucket_name):
               'authurl':'http://smog.uppmax.uu.se:5000/v2.0'}
 
     conn = swiftclient.client.Connection(auth_version=2, **config)
-    angle ="0"
+    
     
     (response, bucket_list) = conn.get_account()
     for bucket in bucket_list:
