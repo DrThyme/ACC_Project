@@ -48,8 +48,8 @@ def calc_lift_force(ang):
     os.system("export LC_ALL=C")
     os.system(cmdx)
     #conv_cmd = "cd /home/ubuntu/ACC_Project;./convert_to_xml.sh /home/ubuntu/ACC_Project/naca_airfoil/msh/"
-    ccmd = "cd /home/ubuntu/ACC_Project/naca_airfoil/msh;dolfin-convert --output xml r0a"+angle+"n200.msh r0a"+angle+"n200.xml"
-    print "Running CMD: "+ccmd
+    conv_cmd = "cd /home/ubuntu/ACC_Project/naca_airfoil/msh;dolfin-convert --output xml r0a"+angle+"n200.msh r0a"+angle+"n200.xml"
+    print "Running CMD: "+conv_cmd
     os.system(conv_cmd)
     
     
@@ -60,13 +60,13 @@ def calc_lift_force(ang):
     
     
     # *GET LIST OF FILENAME*
-    for fil in result_folder:
-        filename, file_extension = os.path.splitext(str(fil))
-        if file_extension = ".xml":
-            f = filename.replace("/home/ubuntu/ACC_Project/naca_airfoil/msh/","../msh/")
-            cmdy="cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 "+str(f)+".xml"
-            print "running cmd: "+cmdy
-            os.system(cmdy)
+    #for fil in result_folder:
+    
+    
+    
+    cmdy="cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 ../msh/r0a"+angle+"n200.xml"
+    print "running cmd: "+cmdy
+    os.system(cmdy)
 
 
     # TODO: UPLOAD ALL FILES
