@@ -80,5 +80,4 @@ print "*** Finished after "+str(tot_time)+"s ***"
 
 print "=============== RES =============="
 print len(res)
-for (a,b) in res:
-    print "- " + str(a) + " " + str(b)
+
