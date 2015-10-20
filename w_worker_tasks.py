@@ -47,9 +47,10 @@ def calc_lift_force(ang):
     print "CMD: " + cmdx
     os.system("export LC_ALL=C")
     os.system(cmdx)
-    os.system("mkdir /home/ubuntu/cmd1")
-    os.system("cd /home/ubuntu/ACC_Project;./convert_to_xml.sh naca_airfoil/msh/")
-    os.system("mkdir /home/ubuntu/cmd2")
+    conv_cmd = "cd /home/ubuntu/ACC_Project;./convert_to_xml.sh naca_airfoil/msh/"
+    print "Running CMD: "+conv_cmd
+    os.system(conv_cmd)
+    
     
 
     directory="/home/ubuntu/ACC_Project/naca_airfoil/xml/*"
@@ -61,7 +62,7 @@ def calc_lift_force(ang):
     for fil in result_folder:
         filename, file_extension = os.path.splitext(str(fil))
         f = filename.replace("/home/ubuntu/ACC_Project/naca_airfoil/xml/","../xml/")
-        os.system("mkdir /home/ubuntu/X"+str(f))
+        
         cmdy="cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 "+str(f)+".xml"
         print "running cmd: "+cmdy
         os.system(cmdy)
