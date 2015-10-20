@@ -107,7 +107,7 @@ def upload_result(angle,bucket_name,filepath):
         conn.put_container(bucket_name)
     	print "*** Creating bucket ***"
 
-    xw=filenpath.replace("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/","")
+    xw=filepath.replace("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/","")
     with open(filepath, 'r') as res_file:
         conn.put_object(bucket_name, str(angle)+"_degrees/"+str(wx),
                         contents= res_file.read(),
