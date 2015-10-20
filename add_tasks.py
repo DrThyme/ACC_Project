@@ -60,10 +60,11 @@ task_group = group(tasks)
 group_result = task_group()
 
 print "Waiting for workers to finnish..."
-while (group_result.ready() == False):
+while (group_result.ready() != True):
     time.sleep(2)
 
-res = group_result.get()
+if group_result.ready() == True:
+    res = group_result.get()
 end = time.time()
 tot_time = end-start
 print "DONE!!!!!!!"

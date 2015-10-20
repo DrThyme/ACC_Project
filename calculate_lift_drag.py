@@ -13,14 +13,14 @@ def calc_average(parse_file):
     sum_temp = 0
     for j in output[1]:
         sum_temp += float(j)
-        sum_avg_lift = sum_temp/len(output[1])
+    sum_avg_lift = sum_temp/len(output[1])
 
 # calculate the average drag force by summing all values in the
 # third list
     sum_temp = 0
     for j in output[2]:
         sum_temp += float(j)
-        sum_avg_drag = sum_temp/len(output[2])
+    sum_avg_drag = sum_temp/len(output[2])
 
     print 'Average lift: ',sum_avg_lift
     print 'Average drag: ',sum_avg_drag
