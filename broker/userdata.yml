@@ -50,6 +50,9 @@ runcmd:
     - rabbitmqctl add_user workerzon7 hej123
     - rabbitmqctl set_permissions -p cluuster workerzon7 ".*" ".*" ".*"
 
+    - rabbitmqctl add_user workerzon8 hej123
+    - rabbitmqctl set_permissions -p cluuster workerzon8 ".*" ".*" ".*"
+
     - rabbitmqctl restart
     - chmod -R 777 /home/ubuntu/ACC_Project
     - mkdir home/ubuntu/tmp
