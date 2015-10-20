@@ -58,7 +58,7 @@ def calc_lift_force(ang):
     for fil in result_folder:
         filename, file_extension = os.path.splitext(str(fil))
         f = filename.replace("/home/ubuntu/ACC_Project/naca_airfoil/xml/","../xml/")
-        os.system("mkdir /home/ubuntu/"+str(f))
+        os.system("mkdir /home/ubuntu/X"+str(f))
         os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 "+str(f))
 
 
@@ -67,6 +67,7 @@ def calc_lift_force(ang):
     (av_l, av_d) = calc_average("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/drag_ligt.m")
     upload_result(ang,bucket_name)
     print f
+    return (av_l, av_d)
     
     
 

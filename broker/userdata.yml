@@ -16,6 +16,11 @@ runcmd:
     - pip install flower
     - git clone https://github.com/DrThyme/ACC_Project.git
     - mv ACC_Project home/ubuntu/ACC_Project
+    - export C_FORCE_ROOT="true"
+    - export LC_ALL="en_US.UTF-8"
+    - mkdir /home/ubuntu/ACC_Project/naca_airfoil/geo
+    - mkdir /home/ubuntu/ACC_Project/naca_airfoil/msh
+    - mkdir /home/ubuntu/ACC_Project/naca_airfoil/xml
 
     - rabbitmqctl add_user brokerzon hej123
     - rabbitmqctl add_vhost cluuster
