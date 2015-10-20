@@ -8,18 +8,20 @@ import paramiko
 
 img_name = 'MOLNS_OpenStack_accpro4_1444644885'
 
-NR_OF_WORKERS = int(sys.argv[3]) + 1
-openstack_pw = sys.argv[2]
-openstack_usrname = sys.argv[1]
 PRIV_KEY_PATH = '/Users/adamruul/datormoln/cloud.key'
 PUB_KEY_PATH = '/Users/adamruul/datormoln/cloud.key.pub'
 
 if len(sys.argv) < 4:
-    print "ERROR: wrong input!!!!!!!!!!"
+    print "*** ERROR: wrong input!!!!!!!!!! ***"
     print "Usage:"
-    print "python cw2.py <username> <password> <nr_of_workers>"
+    print "python cw2.py <openstack_username> <openstack_password> <nr_of_workers>"
+    print "EXAMPLE:"
+    print "python cw2.py johndoe banana 3"
     sys.exit(0)
 else:
+    NR_OF_WORKERS = int(sys.argv[3]) + 1
+    openstack_pw = sys.argv[2]
+    openstack_usrname = sys.argv[1]
     print(chr(27) + "[2J")
     print "*** Creation Initiated ***"
     
@@ -58,9 +60,10 @@ def start_workers(bro_ip,ip_list):
         sshkey = paramiko.RSAKey.from_private_key_file(PRIV_KEY_PATH)
         if ip == bro_ip:
                 #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1]) + " brokerzon"
-            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw) + " brokerzon "+str(openstack_usrname)
-            
             worker_name = "brokerzon"
+            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)+";celery worker -l info -A worker_tasks"
+            
+            
         else:
             worker_name = "workerzon"+str(x)
             cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)+";celery worker -l info -A worker_tasks"
@@ -71,6 +74,7 @@ def start_workers(bro_ip,ip_list):
             ssh.connect(str(ip), username='ubuntu', pkey=sshkey)
             print "*** SSH Connection Established to: "+str(ip)+" ***"
             #print "Running command: "+cmd
+            print "*** Running command: "+cmd+" ***"
             stdin,stdout,stderr = ssh.exec_command(cmd)
             #print "Worker Started!"
             #type(stdin)
@@ -85,7 +89,7 @@ def start_workers(bro_ip,ip_list):
 def start_broker(bro_ip):
     #cmd = "cd /home/ubuntu/tweet_ass/task2/;celery flower -A remote --address=0.0.0.0 --port=5000"
     
-    cmd = "cd /home/ubuntu/ACC_Project/;celery flower -A worker_tasks --address=0.0.0.0 --port=5000"
+    cmd = "cd /home/ubuntu/ACC_Project/;celery flower -A worker_tasks --address=0.0.0.0 --port=5001"
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     sshkey = paramiko.RSAKey.from_private_key_file(PRIV_KEY_PATH)
@@ -180,12 +184,14 @@ for x in range (0,NR_OF_WORKERS):
         time.sleep(5)
         instance = nc.servers.get(instance.id)
         status = instance.status
-    print "*** " +worker_name+ " is now running  ***"
+    if worker_name != "Adamzon-Worker-0":
+        print "*** " +worker_name+ " is now running  ***"
 
 
 # Assign Floating IP
 ins = nc.servers.find(name='Adamzon-Broker')
 iip = attach_ip(nc,ins)
+
 print "Adamzon-Broker IP:\t "+ str(iip)
 
 ip_details = []
@@ -202,16 +208,17 @@ for wname in worker_names:
         for server in serverlist:
             if server.name == 'Adamzon-Worker-0':
                 server.delete()
-                print "deleted first worker!!!!!"
+                #print "Deleted aux-worker!!!!!"
                 wips.remove(str(ipp))
             else:
                 pass
-    print wname + " IP:\t"+ str(ipp)
+    if wname != "Adamzon-Worker-0":
+        print wname + " IP:\t"+ str(ipp)
 
 
 print "*** installing packages... ***"
-wait_time = 180
-for i in range(0,18):
+wait_time = 240
+for i in range(0,24):
     time.sleep(10)
     wait_time -= 10
     print str(wait_time)+"s remaining..."
@@ -226,7 +233,7 @@ print "================ DETAILS ======================================"
 print "Adamzon-Broker:\t\t"+str(iip)
 for (n,i) in ip_details:
     print n + ":\t"+ str(i)
-print "\nFlower dashboard available at: \thttp://" + str(iip) + ":5000"
+print "\nFlower dashboard available at: \thttp://" + str(iip) + ":5001"
 print "==============================================================="
 
 

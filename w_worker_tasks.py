@@ -52,7 +52,6 @@ def calc_lift_force(ang):
     
     
     # *GET LIST OF FILENAME*
-    
     for fil in result_folder:
         filename, file_extension = os.path.splitext(str(fil))
         f = filename.replace("/home/ubuntu/ACC_Project/naca_airfoil/xml/","../xml/")
@@ -61,7 +60,7 @@ def calc_lift_force(ang):
 
     # TODO: UPLOAD ALL FILES
     bucket_name = "G1_Project_result"
-    (av_l, av_d) = calc_avrage("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/drag_ligt.m")
+    (av_l, av_d) = calc_average("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/drag_ligt.m")
     upload_result(ang,bucket_name)
     print f
     
