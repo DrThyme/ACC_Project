@@ -109,7 +109,7 @@ def upload_result(angle,bucket_name,filepath):
 
     xw=filepath.replace("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/","")
     with open(filepath, 'r') as res_file:
-        conn.put_object(bucket_name, str(angle)+"_degrees/"+str(wx),
+        conn.put_object(bucket_name, str(angle)+"_degrees/"+str(xw),
                         contents= res_file.read(),
                         content_type='text/plain')
 
