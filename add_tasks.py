@@ -20,6 +20,10 @@ def input_form_user(min_ang,max_ang,nr):
     nr_angles = nr # 10
 
     incr_angle = (max_angle - min_angle) / nr_angles # 0.3
+    if incr_angle < 1:
+        incr_angle = 1
+    else:
+        incr_angle = int(incr_angle)
     print "INCR_ANGLE: " +str(incr_angle)
     i = min_angle
     angle_list = []
