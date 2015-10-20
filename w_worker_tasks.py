@@ -62,7 +62,7 @@ def calc_lift_force(ang):
         filename, file_extension = os.path.splitext(str(fil))
         f = filename.replace("/home/ubuntu/ACC_Project/naca_airfoil/xml/","../xml/")
         os.system("mkdir /home/ubuntu/X"+str(f))
-        cmdy="cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 "+str(f)
+        cmdy="cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 "+str(f)+".xml"
         print "running cmd: "+cmdy
         os.system(cmdy)
 
