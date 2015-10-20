@@ -1,3 +1,4 @@
+from __future__ import division
 import os
 from celery import Celery, group, subtask
 import sys
@@ -9,7 +10,7 @@ import time
 import json
 import swiftclient.client
 from worker_tasks import calc_lift_force
-from __future__ import division
+
 
 bucket_name = "G1_Project_result"
 
