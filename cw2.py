@@ -61,7 +61,7 @@ def start_workers(bro_ip,ip_list):
         if ip == bro_ip:
                 #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1]) + " brokerzon"
             worker_name = "brokerzon"
-            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)+";celery worker -l info -A worker_tasks"
+            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)
             
             
         else:

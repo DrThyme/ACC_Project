@@ -48,7 +48,7 @@ print "All Objects deleted..."
 
 
 
-angle_list = input_form_user(10,13,3)
+angle_list = input_form_user(0,3,3)
 start = time.time()
 print "STARTRING!!!!!!!"
 tasks = [calc_lift_force.s(angle) for angle in angle_list]
