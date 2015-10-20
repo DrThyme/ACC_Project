@@ -113,22 +113,7 @@ def upload_result(angle,bucket_name,filepath):
                         contents= res_file.read(),
                         content_type='text/plain')
 
-        
-"""
-    directory="/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/*"
-    dd = "/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results"
-    result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
-    for fil in result_folder:
-        filename, file_extension = os.path.splitext(str(fil))
-        xw=filename.replace(dd+"/","")
-        filenamee = xw+str(file_extension)
-	print "*** Uploading: '" +str(fil)+"' ***"
-        with open(fil, 'r') as res_file:
-            conn.put_object(bucket_name, str(angle)+"_degrees/"+str(filenamee),
-                            contents= res_file.read(),
-                            content_type='text/plain')
-"""
-    return
+    return True
 
 
 
