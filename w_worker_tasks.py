@@ -56,7 +56,7 @@ def calc_lift_force(ang):
 
     directory="/home/ubuntu/ACC_Project/naca_airfoil/msh/*"
     
-    result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
+    #result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
     
     
     # *GET LIST OF FILENAME*
@@ -71,9 +71,10 @@ def calc_lift_force(ang):
 
     # TODO: UPLOAD ALL FILES
     bucket_name = "G1_Project_result"
+    fp = "/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/drag_ligt.m"
     (av_l, av_d) = calc_average("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/drag_ligt.m")
-    upload_result(ang,bucket_name)
-    
+
+    upload_result(angle,bucket_name,fp)
     return (av_l, av_d)
     
     
@@ -82,7 +83,7 @@ def calc_lift_force(ang):
 
 
 
-def upload_result(angle,bucket_name):
+def upload_result(angle,bucket_name,filepath):
     """
     Uploads the result folder to the bucket 'bucket'.... prepends the angle  'angle' used when solving the equation, to each filename
 
@@ -106,8 +107,14 @@ def upload_result(angle,bucket_name):
         conn.put_container(bucket_name)
     	print "*** Creating bucket ***"
 
+    xw=filenpath.replace("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/","")
+    with open(filepath, 'r') as res_file:
+        conn.put_object(bucket_name, str(angle)+"_degrees/"+str(wx),
+                        contents= res_file.read(),
+                        content_type='text/plain')
 
-
+        
+"""
     directory="/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/*"
     dd = "/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results"
     result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
@@ -120,11 +127,8 @@ def upload_result(angle,bucket_name):
             conn.put_object(bucket_name, str(angle)+"_degrees/"+str(filenamee),
                             contents= res_file.read(),
                             content_type='text/plain')
-
-    (response, obj_list) = conn.get_container(bucket_name)
-    print "================ v OBJECT NAMES: v ================"
-    for obj in obj_list:
-        print obj['name']
+"""
+    return
 
 
 
