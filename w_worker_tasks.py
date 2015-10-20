@@ -47,7 +47,7 @@ def calc_lift_force(ang):
     os.system("cd /home/ubuntu/ACC_Project/;./convert_to_xml.sh naca_airfoil/msh/")
 
     directory="/home/ubuntu/ACC_Project/naca_airfoil/xml/*"
-    d = 
+    
     result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
     
     

@@ -210,8 +210,8 @@ for wname in worker_names:
 
 
 print "*** installing packages... ***"
-wait_time = 260
-for i in range(0,26):
+wait_time = 120
+for i in range(0,12):
     time.sleep(10)
     wait_time -= 10
     print str(wait_time)+"s remaining..."
