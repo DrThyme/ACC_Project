@@ -47,17 +47,20 @@ print "All Objects deleted..."
 
 
 angle_list = input_form_user(0,3,3)
+start = time.time()
+print "STARTRING!!!!!!!"
 tasks = [calc_lift_force.s(angle) for angle in angle_list]
 task_group = group(tasks)
 group_result = task_group()
 
-task_group = group(tasks)
-group_result = task_group()
 print "Waiting for workers to finnish..."
 while (group_result.ready() == False):
     time.sleep(2)
 res = group_result.get() # list of tuples: (i,av_lift,av_drag)
+end = time.time()
+tot_time = end-start
 print "DONE!!!!!!!"
+
 
 
 (response, obj_list) = conn.get_container(bucket_name)
@@ -65,3 +68,4 @@ object_name_list = []
 print "================ v OBJECT NAMES: v ================"
 for obj in obj_list: 
     print obj['name']
+print "*** Finished after "+str(tot_time)"s ***"

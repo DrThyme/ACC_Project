@@ -6,50 +6,9 @@ from novaclient.client import Client
 import paramiko
 
 
-"""
-TODO:
-* vettiga tasks i add_tasks
-* paramiko -> starta workers med celery-cmd
-* flask api/hemsida
-* fixa flower
-
-
-USAGE:
-python create_workers <password>
-ssh to broker -> python create_tasks
-check flower
-
-
-FILES CONNECTED:
-create_workers.py(L) -> set_connections.py -> w_remote.py -> create_tasks.py -> userdata.yml(L) -> broker/userdata.yml(L) -> ACC... (L) -> 
-
-
-TIMES:
-1 workers: 
-2 workers: Finished after: 222.639057875s
-3 workers: Finished after: 188.239850998s
-4 workers: Finished after: 173.42562604s
-5 workers: 
-6 workers: Finished after: 145.900032997s
-7 workers:
-8 workers:
-"""
-
-
-
-
-"""
-
-my_str = 
-
-string=sed -e '$!d' /var/log/cloud-init-output.log; if [[ $string == *"My long"* ]]; then echo "It's there!"; fi
-
-
-"""
-
 img_name = 'MOLNS_OpenStack_accpro4_1444644885'
 
-NR_OF_WORKERS = 3
+NR_OF_WORKERS = sys.argv[3]
 
 openstack_pw = sys.argv[2]
 openstack_usrname = sys.argv[1]
@@ -57,7 +16,9 @@ PRIV_KEY_PATH = '/Users/adamruul/datormoln/cloud.key'
 PUB_KEY_PATH = '/Users/adamruul/datormoln/cloud.key.pub'
 
 if len(sys.argv) < 3:
-    print "Please provide a password and a user name!!!!!!!!!! python create_workers <username> <password>"
+    print "ERROR: wrong input!!!!!!!!!!"
+    print "Usage:"
+    print "python cw2.py <username> <password> <nr_of_workers>"
     sys.exit(0)
 else:
     print(chr(27) + "[2J")

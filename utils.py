@@ -7,7 +7,7 @@ from flask import request
 from flask import render_template
 import time
 import json
-
+from worker_tasks import calc_lift_force
 
 
 # ARGUMENTS
@@ -102,10 +102,24 @@ def start():
     maxAngle = request.form['maxAngle']
     minAngle = request.form['minAngle']
     numSamples = request.form['numSamples']
+    angle_list = input_form_user(minAngle,maxAngle,numSamples)
+    start = time.time()
+    print "STARTRING!!!!!!!"
+    tasks = [calc_lift_force.s(angle) for angle in angle_list]
+    task_group = group(tasks)
+    group_result = task_group()
+    print "Waiting for workers to finnish..."
+    while (group_result.ready() == False):
+        time.sleep(2)
+    res = group_result.get() # list of tuples: (i,av_lift,av_drag)
+    end = time.time()
+    tot_time = end-start
+    print "DONE!!!!!!!"
+
     
     
     #main(maxAngle,minAngle,numSamples)
-    return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples)
+    return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples,tot_time=tot_time)
 
 
 @apps.route('/result', methods=['GET'])
