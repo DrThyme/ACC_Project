@@ -47,13 +47,14 @@ def calc_lift_force(ang):
     print "CMD: " + cmdx
     os.system("export LC_ALL=C")
     os.system(cmdx)
-    conv_cmd = "cd /home/ubuntu/ACC_Project;./convert_to_xml.sh naca_airfoil/msh/"
-    print "Running CMD: "+conv_cmd
+    #conv_cmd = "cd /home/ubuntu/ACC_Project;./convert_to_xml.sh /home/ubuntu/ACC_Project/naca_airfoil/msh/"
+    ccmd = "cd /home/ubuntu/ACC_Project/naca_airfoil/msh;dolfin-convert --output xml r0a"+angle+"n200.msh r0a"+angle+"n200.xml"
+    print "Running CMD: "+ccmd
     os.system(conv_cmd)
     
     
 
-    directory="/home/ubuntu/ACC_Project/naca_airfoil/xml/*"
+    directory="/home/ubuntu/ACC_Project/naca_airfoil/msh/*"
     
     result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
     
@@ -61,11 +62,11 @@ def calc_lift_force(ang):
     # *GET LIST OF FILENAME*
     for fil in result_folder:
         filename, file_extension = os.path.splitext(str(fil))
-        f = filename.replace("/home/ubuntu/ACC_Project/naca_airfoil/xml/","../xml/")
-        
-        cmdy="cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 "+str(f)+".xml"
-        print "running cmd: "+cmdy
-        os.system(cmdy)
+        if file_extension = ".xml":
+            f = filename.replace("/home/ubuntu/ACC_Project/naca_airfoil/msh/","../msh/")
+            cmdy="cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 "+str(f)+".xml"
+            print "running cmd: "+cmdy
+            os.system(cmdy)
 
 
     # TODO: UPLOAD ALL FILES
