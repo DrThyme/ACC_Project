@@ -234,6 +234,7 @@ print "Adamzon-Broker:\t\t"+str(iip)
 for (n,i) in ip_details:
     print n + ":\t"+ str(i)
 print "\nFlower dashboard available at: \thttp://" + str(iip) + ":5001"
+print "\nWeb-UI available at: \thttp://" + str(iip) + ":5000"
 print "==============================================================="
 
 

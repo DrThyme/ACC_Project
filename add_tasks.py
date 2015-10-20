@@ -9,6 +9,7 @@ import time
 import json
 import swiftclient.client
 from worker_tasks import calc_lift_force
+from __future__ import division
 
 bucket_name = "G1_Project_result"
 
@@ -18,7 +19,7 @@ def input_form_user(min_ang,max_ang,nr):
     nr_angles = nr # 10
 
     incr_angle = (max_angle - min_angle) / nr_angles # 0.3
-
+    print "INCR_ANGLE: " +str(incr_angle)
     i = min_angle
     angle_list = []
     while i < max_angle:
@@ -46,7 +47,7 @@ print "All Objects deleted..."
 
 
 
-angle_list = input_form_user(10,12,3)
+angle_list = input_form_user(10,13,3)
 start = time.time()
 print "STARTRING!!!!!!!"
 tasks = [calc_lift_force.s(angle) for angle in angle_list]
