@@ -68,4 +68,4 @@ object_name_list = []
 print "================ v OBJECT NAMES: v ================"
 for obj in obj_list: 
     print obj['name']
-print "*** Finished after "+str(tot_time)"s ***"
+print "*** Finished after "+str(tot_time)+"s ***"

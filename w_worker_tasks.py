@@ -6,7 +6,7 @@ from flask import Flask, jsonify
 import time
 import json
 import glob
-
+from calculate_lift_drag import calc_avrage
 
 
 """
@@ -47,6 +47,7 @@ def calc_lift_force(ang):
     os.system("cd /home/ubuntu/ACC_Project/;./convert_to_xml.sh naca_airfoil/msh/")
 
     directory="/home/ubuntu/ACC_Project/naca_airfoil/xml/*"
+    d = 
     result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
     
     
@@ -54,12 +55,16 @@ def calc_lift_force(ang):
     
     for fil in result_folder:
         filename, file_extension = os.path.splitext(str(fil))
-        os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 "+str(fil))
+        f = filename.replace("/home/ubuntu/ACC_Project/naca_airfoil/xml/","../xml/")
+        os.system("cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 "+str(f))
 
 
     # TODO: UPLOAD ALL FILES
     bucket_name = "G1_Project_result"
+    (av_l, av_d) = calc_avrage("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results/drag_ligt.m")
     upload_result(ang,bucket_name)
+    print f
+    
     
 
     # Function call Via shell or imported python-function?

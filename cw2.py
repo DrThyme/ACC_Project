@@ -8,14 +8,13 @@ import paramiko
 
 img_name = 'MOLNS_OpenStack_accpro4_1444644885'
 
-NR_OF_WORKERS = sys.argv[3]
-
+NR_OF_WORKERS = int(sys.argv[3]) + 1
 openstack_pw = sys.argv[2]
 openstack_usrname = sys.argv[1]
 PRIV_KEY_PATH = '/Users/adamruul/datormoln/cloud.key'
 PUB_KEY_PATH = '/Users/adamruul/datormoln/cloud.key.pub'
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 4:
     print "ERROR: wrong input!!!!!!!!!!"
     print "Usage:"
     print "python cw2.py <username> <password> <nr_of_workers>"

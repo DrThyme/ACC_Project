@@ -24,3 +24,4 @@ def calc_average(parse_file):
 
     print 'Average lift: ',sum_avg_lift
     print 'Average drag: ',sum_avg_drag
+  return (sum_avg_lift,sum_avg_drag)
