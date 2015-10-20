@@ -58,7 +58,7 @@ def start_workers(bro_ip,ip_list):
         sshkey = paramiko.RSAKey.from_private_key_file(PRIV_KEY_PATH)
         if ip == bro_ip:
                 #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1]) + " brokerzon"
-            cmd = "cd /home/ubuntu/ACC_Project;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw) + " brokerzon "+str(openstack_usrname)
+            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw) + " brokerzon "+str(openstack_usrname)
             
             worker_name = "brokerzon"
         else:
@@ -210,8 +210,8 @@ for wname in worker_names:
 
 
 print "*** installing packages... ***"
-wait_time = 120
-for i in range(0,12):
+wait_time = 180
+for i in range(0,18):
     time.sleep(10)
     wait_time -= 10
     print str(wait_time)+"s remaining..."

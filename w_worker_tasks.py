@@ -6,7 +6,7 @@ from flask import Flask, jsonify
 import time
 import json
 import glob
-from calculate_lift_drag import calc_avrage
+from calculate_lift_drag import calc_average
 
 
 """
