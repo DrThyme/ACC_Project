@@ -62,7 +62,8 @@ group_result = task_group()
 print "Waiting for workers to finnish..."
 while (group_result.ready() == False):
     time.sleep(2)
-res = group_result.get() # list of tuples: (i,av_lift,av_drag)
+
+res = group_result.get()
 end = time.time()
 tot_time = end-start
 print "DONE!!!!!!!"
@@ -77,5 +78,6 @@ for obj in obj_list:
 print "*** Finished after "+str(tot_time)+"s ***"
 
 print "=============== RES =============="
-for i in res:
-    print i
+print len(res)
+for (a,b) in res:
+    print "- " + str(a) + " " + str(b)
