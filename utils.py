@@ -7,7 +7,7 @@ from flask import request
 from flask import render_template
 import time
 import json
-from w_worker_tasks import calc_lift_force
+from worker_tasks import calc_lift_force
 
 
 # ARGUMENTS
@@ -35,20 +35,25 @@ celery = Celery('tasks', backend='amqp',
 
 
 
+
 def input_form_user(min_ang,max_ang,nr):
     min_angle = min_ang # 0
     max_angle = max_ang # 30
     nr_angles = nr # 10
 
     incr_angle = (max_angle - min_angle) / nr_angles # 0.3
-
+    if incr_angle < 1:
+        incr_angle = 1
+    else:
+        incr_angle = int(incr_angle)
+    print "INCR_ANGLE: " +str(incr_angle)
     i = min_angle
     angle_list = []
     while i < max_angle:
         angle_list.append(i)
+        print "adding angle "+ str(i)
         i += incr_angle
     return angle_list
-
 
 def main(min_ang,max_ang,nr):
     angle_list = input_form_user(min_ang,max_ang,nr)
@@ -103,7 +108,7 @@ def start():
     maxAngle = request.form['maxAngle']
     minAngle = request.form['minAngle']
     numSamples = request.form['numSamples']
-    #angle_list = input_form_user(minAngle,maxAngle,numSamples)
+    angle_list = input_form_user(minAngle,maxAngle,numSamples)
     
     start = time.time()
     
@@ -118,7 +123,8 @@ def start():
 
     print "DONE!!!!!!!"
 
-    
+    for i in res:
+        print i
     
     #main(maxAngle,minAngle,numSamples)
     
