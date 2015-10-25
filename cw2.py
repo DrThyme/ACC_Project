@@ -26,7 +26,7 @@ else:
     openstack_pw = sys.argv[2]
     openstack_usrname = sys.argv[1]
     """
-    NR_OF_WORKERS = int(os.environ['NR_WORKERS'])
+    NR_OF_WORKERS = int(os.environ['NR_WORKERS']) + 1
     openstack_usrname = os.environ['OS_USERNAME']
     openstack_pw = os.environ['OS_PASSWORD']
     print(chr(27) + "[2J")

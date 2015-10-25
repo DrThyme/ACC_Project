@@ -37,9 +37,9 @@ celery = Celery('tasks', backend='amqp',
 
 
 def input_form_user(min_ang,max_ang,nr):
-    min_angle = min_ang # 0
-    max_angle = max_ang # 30
-    nr_angles = nr # 10
+    min_angle = int(min_ang) # 0
+    max_angle = int(max_ang) # 30
+    nr_angles = int(nr) # 10
 
     incr_angle = (max_angle - min_angle) / nr_angles # 0.3
     if incr_angle < 1:
@@ -110,7 +110,7 @@ def start():
     numSamples = request.form['numSamples']
     if minAngle > maxAngle:
         return
-    else:
+    
     angle_list = input_form_user(minAngle,maxAngle,numSamples)
     
     start = time.time()
