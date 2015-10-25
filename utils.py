@@ -108,6 +108,9 @@ def start():
     maxAngle = request.form['maxAngle']
     minAngle = request.form['minAngle']
     numSamples = request.form['numSamples']
+    if minAngle > maxAngle:
+        return
+    else:
     angle_list = input_form_user(minAngle,maxAngle,numSamples)
     
     start = time.time()
