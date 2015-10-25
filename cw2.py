@@ -7,11 +7,13 @@ import paramiko
 
 
 img_name = 'MOLNS_OpenStack_accpro4_1444644885'
-
+"""
 PRIV_KEY_PATH = '/Users/adamruul/datormoln/cloud.key'
 PUB_KEY_PATH = '/Users/adamruul/datormoln/cloud.key.pub'
-
-if len(sys.argv) < 4:
+"""
+PRIV_KEY_PATH = os.environ['PRIV_KEY']
+PUB_KEY_PATH = os.environ['PUB_KEY']
+if len(sys.argv) < 1:
     print "*** ERROR: wrong input!!!!!!!!!! ***"
     print "Usage:"
     print "python cw2.py <openstack_username> <openstack_password> <nr_of_workers>"
@@ -19,9 +21,14 @@ if len(sys.argv) < 4:
     print "python cw2.py johndoe banana 3"
     sys.exit(0)
 else:
+    """
     NR_OF_WORKERS = int(sys.argv[3]) + 1
     openstack_pw = sys.argv[2]
     openstack_usrname = sys.argv[1]
+    """
+    NR_OF_WORKERS = int(os.environ['NR_WORKERS'])
+    openstack_usrname = os.environ['OS_USERNAME']
+    openstack_pw = os.environ['OS_PASSWORD']
     print(chr(27) + "[2J")
     print "*** Creation Initiated ***"
     
