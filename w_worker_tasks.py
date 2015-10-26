@@ -41,7 +41,7 @@ def calc_lift_force(ang):
     """
 
     # THIS VAR IS ONLY FOR TESTING
-    angle = str(ang)
+    angle = str(int(ang))
     cmdx = "cd /home/ubuntu/ACC_Project/naca_airfoil;./run.sh "+angle+" "+angle+" 1 200 0"
     print "RUN SH ON: "+angle
     print "CMD: " + cmdx
@@ -68,7 +68,8 @@ def calc_lift_force(ang):
     cmdmv = "cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;mv results "+str(angle)+"_results"
     print "running cmd: "+cmdy
     print "running cmd: "+cmdmv
-    os.system(cmdy)
+    #os.system(cmdy)
+    return_code = subprocess.call(cmdy, shell=True)
     os.system(cmdmv)
 
 
@@ -82,9 +83,11 @@ def calc_lift_force(ang):
         av_l = 0
         pass
 
-    upload_result(angle,bucket_name,fp)
+    exturl = upload_result(angle,bucket_name,fp)
     #return (av_l, av_d)
-    return (av_l, av_d, angle)
+    
+    dl_url = "http://smog.uppmax.uu.se:8080/swift/v1/"+bucket_name+"/"+str(exturl)
+    return (av_l, av_d, angle, dl_url)
     
 
     # Function call Via shell or imported python-function?
@@ -117,11 +120,12 @@ def upload_result(angle,bucket_name,filepath):
 
     xw=filepath.replace("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/"+str(angle)+"_results/","")
     with open(filepath, 'r') as res_file:
-        conn.put_object(bucket_name, str(angle)+"_degrees/"+str(xw),
+        fnam = str(angle)+"_degrees/"+str(xw)
+        conn.put_object(bucket_name, fnam,
                         contents= res_file.read(),
                         content_type='text/plain')
 
-    return True
+    return fnam
 
 
 

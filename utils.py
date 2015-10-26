@@ -132,7 +132,7 @@ def start():
     
     end = time.time()
     tot_time = end-start
-    return render_template("result.html",res=res)
+    return render_template("result.html",res=res,tot_time=tot_time)
 
 
 @apps.route('/result', methods=['GET'])
