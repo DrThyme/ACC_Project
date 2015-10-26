@@ -51,7 +51,7 @@ def calc_lift_force(ang):
     #conv_cmd = "cd /home/ubuntu/ACC_Project;./convert_to_xml.sh /home/ubuntu/ACC_Project/naca_airfoil/msh/"
     conv_cmd = "cd /home/ubuntu/ACC_Project/naca_airfoil/msh;dolfin-convert --output xml r0a"+angle+"n200.msh r0a"+angle+"n200.xml"
     print "Running CMD: "+conv_cmd
-    os.system(conv_cmd)
+    return_code = check_call(conv_cmd, shell=True)
     
     
 
