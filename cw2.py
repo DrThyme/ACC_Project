@@ -107,6 +107,18 @@ def start_broker(bro_ip):
         stdin,stdout,stderr = ssh.exec_command(cmd)
     except Exception as e:
         print e
+    ssh.close()
+    cmd2 = "cd /home/ubuntu/ACC_Project/;python utils.py"
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    sshkey = paramiko.RSAKey.from_private_key_file(PRIV_KEY_PATH)
+    try:
+        ssh.connect(str(bro_ip), username='ubuntu', pkey=sshkey)
+        print "*** SSH Connection Established to: "+str(bro_ip)+" ***"
+        print "*** Running command: "+cmd2+" ***"
+        stdin,stdout,stderr = ssh.exec_command(cmd2)
+    except Exception as e:
+        print e
 
 
     
