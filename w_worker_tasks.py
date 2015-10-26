@@ -78,9 +78,10 @@ def calc_lift_force(ang):
     print "running cmd: "+cmdy
     print "running cmd: "+cmdmv
     #os.system(cmdy)
-    os.system("export LC_ALL=C")
+    xmlfile = "naca_airfoil/msh/r0a"+angle+"n200.xml"
+    print "XML FILE:" + "'"+xmlfile+"'"
     try:
-        check_call(['sudo', '/naca_airfoil/navier_stokes_solver/airfoil',"10","0.0001","10.","1","naca_airfoil/msh/r0a"+angle+"n200.xml"])
+        check_call(['sudo', './naca_airfoil/navier_stokes_solver/airfoil',"10","0.0001","10.","1",xmlfile])
     except CalledProcessError as e:
         print e
     os.system(cmdmv)
