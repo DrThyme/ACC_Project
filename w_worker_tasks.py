@@ -68,7 +68,7 @@ def calc_lift_force(ang):
     
     
     cmdy="./naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 naca_airfoil/msh/r0a"+angle+"n200.xml"
-    cmdmv = "mv naca_airfoil/navier_stokes_solver/results naca_airfoil/navier_stokes_solver/"+str(angle)+"_results"
+    cmdmv = "mv /home/ubuntu/ACC_Project/results /home/ubuntu/ACC_Project/"+str(angle)+"_results"
     print "running cmd: "+cmdy
     print "running cmd: "+cmdmv
     #os.system(cmdy)
@@ -80,7 +80,7 @@ def calc_lift_force(ang):
     bucket_name = "G1_Project_result"
     fp = "/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/"+str(angle)+"_results/drag_ligt.m"
     try:
-        (av_l, av_d) = calc_average("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/"+str(angle)+"_results/drag_ligt.m")
+        (av_l, av_d) = calc_average("/home/ubuntu/ACC_Project/"+str(angle)+"_results/drag_ligt.m")
     except:
         av_l = 0
         av_l = 0
@@ -121,7 +121,7 @@ def upload_result(angle,bucket_name,filepath):
         conn.put_container(bucket_name)
     	print "*** Creating bucket ***"
 
-    xw=filepath.replace("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/"+str(angle)+"_results/","")
+    xw=filepath.replace("/home/ubuntu/ACC_Project/"+str(angle)+"_results/","")
     with open(filepath, 'r') as res_file:
         fnam = str(angle)+"_degrees/"+str(xw)
         conn.put_object(bucket_name, fnam,
