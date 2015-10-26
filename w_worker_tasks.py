@@ -7,7 +7,7 @@ import time
 import json
 import glob
 from calculate_lift_drag import calc_average
-import subprocess
+from subprocess import CalledProcessError, check_output, check_call
 
 
 """
@@ -70,7 +70,7 @@ def calc_lift_force(ang):
     print "running cmd: "+cmdy
     print "running cmd: "+cmdmv
     #os.system(cmdy)
-    return_code = subprocess.call(cmdy, shell=True)
+    return_code = check_call(cmdy, shell=True)
     os.system(cmdmv)
 
 

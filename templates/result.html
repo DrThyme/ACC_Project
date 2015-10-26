@@ -16,7 +16,7 @@
 <p>Running process with the following parameters:</p>
 <p>Finished after {{tot_time}}s</p>
         <ul>
-            {% for lift, drag, dl, angle in res %}
+            {% for lift, drag, angle, dl in res %}
             <li><b>{{angle}}°</b></li>
             <li>Avrage lift: {{lift}}</li>
             <li>Avrage drag: {{drag}}</li>
