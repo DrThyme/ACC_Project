@@ -21,7 +21,7 @@ export OS_PROJECT_NAME="ACC-Course"
 # In addition to the owning entity (tenant), OpenStack stores the entity
 # performing the action as the **user**.
 
-echo "Please enter OpenStack Username:"
+echo "Please enter OpenStack Username: [ex: 'adru8091']"
 read OS_USERNAMEX
 echo "You entered: $OS_USERNAMEX"
 echo "************************************************"
@@ -36,26 +36,26 @@ echo "************************************************"
 
 
 
-echo "Please enter ssh keypair name:"
+echo "Please enter ssh keypair name: [ex: 'l3_key_r']"
 read KP_NAME_X
 echo "You entered: $KP_NAME_X"
 echo "************************************************"
 export KP_NAME=$KP_NAME_X
 
-echo "Please enter the maximum number of workers needed for your cluster"
+echo "Please enter the maximum number of workers needed for your cluster [ex: '3']"
 read NR_WORKERS_X
 echo "You entered: $NR_WORKERS_X"
 echo "************************************************"
 export NR_WORKERS=$NR_WORKERS_X
 
 
-echo "Please enter Absolute path to PRIVATE ssh key: "
+echo "Please enter Absolute path to PRIVATE ssh key: [ex: '/Users/adamruul/datormoln/cloud.key']"
 read PRIV_KEY_X
 echo "You entered: $PRIV_KEY_X"
 echo "************************************************"
 export PRIV_KEY=$PRIV_KEY_X
 
-echo "Please enter Absolute path to PUBLIC ssh key: "
+echo "Please enter Absolute path to PUBLIC ssh key: [ex: '/Users/adamruul/datormoln/cloud.key.pub']"
 read PUB_KEY_X
 echo "You entered: $PUB_KEY_X"
 echo "************************************************"

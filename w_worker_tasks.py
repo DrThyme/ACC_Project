@@ -43,13 +43,13 @@ def calc_lift_force(ang):
 
     # THIS VAR IS ONLY FOR TESTING
     angle = str(int(ang))
-    cmdx = "cd /home/ubuntu/ACC_Project/naca_airfoil;./run.sh "+angle+" "+angle+" 1 200 0"
+    cmdx = "./home/ubuntu/ACC_Project/naca_airfoil/run.sh "+angle+" "+angle+" 1 200 0"
     print "RUN SH ON: "+angle
     print "CMD: " + cmdx
     os.system("export LC_ALL=C")
-    os.system(cmdx)
+    return_code = check_call(cmdx, shell=True)
     #conv_cmd = "cd /home/ubuntu/ACC_Project;./convert_to_xml.sh /home/ubuntu/ACC_Project/naca_airfoil/msh/"
-    conv_cmd = "cd /home/ubuntu/ACC_Project/naca_airfoil/msh;dolfin-convert --output xml r0a"+angle+"n200.msh r0a"+angle+"n200.xml"
+    conv_cmd = "dolfin-convert --output xml /home/ubuntu/ACC_Project/naca_airfoil/msh/r0a"+angle+"n200.msh /home/ubuntu/ACC_Project/naca_airfoil/msh/r0a"+angle+"n200.xml"
     print "Running CMD: "+conv_cmd
     return_code = check_call(conv_cmd, shell=True)
     
@@ -65,8 +65,8 @@ def calc_lift_force(ang):
     
     
     
-    cmdy="cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;export LC_ALL=C;./airfoil 10 0.0001 10. 1 ../msh/r0a"+angle+"n200.xml"
-    cmdmv = "cd /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver;mv results "+str(angle)+"_results"
+    cmdy="/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 ../msh/r0a"+angle+"n200.xml"
+    cmdmv = "mv /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/"+str(angle)+"_results"
     print "running cmd: "+cmdy
     print "running cmd: "+cmdmv
     #os.system(cmdy)
