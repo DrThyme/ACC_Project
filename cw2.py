@@ -10,6 +10,7 @@ img_name = 'MOLNS_OpenStack_accpro4_1444644885'
 """
 PRIV_KEY_PATH = '/Users/adamruul/datormoln/cloud.key'
 PUB_KEY_PATH = '/Users/adamruul/datormoln/cloud.key.pub'
+KEY_NAME= 'l3_key_r'
 """
 PRIV_KEY_PATH = os.environ['PRIV_KEY']
 PUB_KEY_PATH = os.environ['PUB_KEY']
@@ -73,7 +74,7 @@ def start_workers(bro_ip,ip_list):
             
         else:
             worker_name = "workerzon"+str(x)
-            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)+";celery worker -l info -A worker_tasks"
+            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)+";celery worker -l info --concurrency=1 -A worker_tasks"
                 #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1])+ " "+str(worker_name)+";celery worker -l info -A remote"
             x+=1
         try:
