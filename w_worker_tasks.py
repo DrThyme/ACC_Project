@@ -72,7 +72,7 @@ def calc_lift_force(ang):
     print "running cmd: "+cmdy
     print "running cmd: "+cmdmv
     #os.system(cmdy)
-    return_code = check_call("export LC_ALL=C;"cmdy, shell=True)
+    return_code = check_call("export LC_ALL=C;"+cmdy, shell=True)
     os.system(cmdmv)
 
 
