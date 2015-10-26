@@ -7,6 +7,7 @@ import time
 import json
 import glob
 from calculate_lift_drag import calc_average
+import subprocess
 
 
 """
