@@ -39,7 +39,7 @@ for i in `seq 0 $n_angles`;
 do
   angle=$(($angle_start + $anglediff*i))
   geofile=a${angle}n${n_nodes}.geo
-  ./ACC_Project/naca_airfoil/naca2gmsh_geo.py $NACA1 $NACA2 $NACA3 $NACA4 $angle $n_nodes > $GEODIR/$geofile
+  ./naca_airfoil/naca2gmsh_geo.py $NACA1 $NACA2 $NACA3 $NACA4 $angle $n_nodes > $GEODIR/$geofile
 done
 for i in `ls $GEODIR`; do
   mshfile="$(echo $i|sed -e 's/geo/msh/')";
