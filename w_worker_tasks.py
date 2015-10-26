@@ -80,11 +80,11 @@ def calc_lift_force(ang):
     #os.system(cmdy)
     try:
         a = check_call("export LC_ALL=C")
-    except:
+    except CalledProcessError as e:
         print e
     try:
         a = check_call("export LC_ALL=C",shell=True)
-    except:
+    except CalledProcessError as e:
         print e
     
     try:
