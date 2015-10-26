@@ -80,7 +80,7 @@ def calc_lift_force(ang):
     #os.system(cmdy)
     os.system("export LC_ALL=C")
     try:
-        return_code = check_call(cmdy)
+        check_call(['sudo', '/naca_airfoil/navier_stokes_solver/airfoil',"10","0.0001","10.","1","naca_airfoil/msh/r0a"+angle+"n200.xml"])
     except CalledProcessError as e:
         print e
     os.system(cmdmv)
