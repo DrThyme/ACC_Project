@@ -7,7 +7,7 @@ import time
 import json
 import glob
 from calculate_lift_drag import calc_average
-from subprocess import CalledProcessError, check_output, check_call
+from subprocess import CalledProcessError, check_output, check_call, call
 
 
 """
@@ -50,10 +50,13 @@ def calc_lift_force(ang):
     return_code = check_call(cmdx, shell=True)
     #conv_cmd = "cd /home/ubuntu/ACC_Project;./convert_to_xml.sh /home/ubuntu/ACC_Project/naca_airfoil/msh/"
 # dolfin-convert --output xml ACC_Project/naca_airfoil/msh/r0a21n200.msh ACC_Project/naca_airfoil/msh/r0a21n200.xml
-   
-    conv_cmd = "dolfin-convert --output xml naca_airfoil/msh/r0a"+angle+"n200.msh naca_airfoil/msh/r0a"+angle+"n200.xml"
+    try:
+        conv_cmd = "dolfin-convert --output xml naca_airfoil/msh/r0a"+angle+"n200.msh naca_airfoil/msh/r0a"+angle+"n200.xml"
+        return_code = call(conv_cmd, shell=True)
+    except CalledProcessError as e:
+        print e
     print "Running CMD: "+conv_cmd
-    return_code = check_call(conv_cmd, shell=True)
+    
     
     
 
