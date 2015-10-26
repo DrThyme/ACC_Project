@@ -47,7 +47,10 @@ def calc_lift_force(ang):
     print "RUN SH ON: "+angle
     print "CMD: " + cmdx
     os.system("export LC_ALL=C")
-    return_code = check_call(cmdx, shell=True)
+    try:
+        return_code = check_call(cmdx, shell=True)
+    except CalledProcessError as e:
+        print e
     #conv_cmd = "cd /home/ubuntu/ACC_Project;./convert_to_xml.sh /home/ubuntu/ACC_Project/naca_airfoil/msh/"
 # dolfin-convert --output xml ACC_Project/naca_airfoil/msh/r0a21n200.msh ACC_Project/naca_airfoil/msh/r0a21n200.xml
     try:
@@ -76,10 +79,18 @@ def calc_lift_force(ang):
     print "running cmd: "+cmdmv
     #os.system(cmdy)
     try:
-        return_code = check_call("export LC_ALL=C;"+cmdy, shell=True)
+        a = check_call("export LC_ALL=C")
+    except:
+        print e
+    try:
+        a = check_call("export LC_ALL=C",shell=True)
+    except:
+        print e
+    
+    try:
+        return_code = check_call(cmdy)
     except CalledProcessError as e:
         print e
-    time.sleep(90)
     os.system(cmdmv)
 
 
