@@ -79,6 +79,7 @@ def calc_lift_force(ang):
         return_code = check_call("export LC_ALL=C;"+cmdy, shell=True)
     except CalledProcessError as e:
         print e
+    time.sleep(90)
     os.system(cmdmv)
 
 
