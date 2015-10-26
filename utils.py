@@ -124,7 +124,6 @@ def start():
         time.sleep(2)
     res = group_result.get() # list of tuples: (i,av_lift,av_drag)
 
-    print "DONE!!!!!!!"
 
     for i in res:
         print i
@@ -133,7 +132,7 @@ def start():
     
     end = time.time()
     tot_time = end-start
-    return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples,tot_time=tot_time)
+    return render_template("result.html",res=res)
 
 
 @apps.route('/result', methods=['GET'])

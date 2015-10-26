@@ -15,10 +15,12 @@
 <h1>RESULT</h1>
         <p>Running process with the following parameters:</p>
         <ul>
-            <li>max angle: {{ arg1 }}°</li>
-            <li>min angle: {{ arg2 }}°</li>
-            <li>nr of steps: {{ arg3 }}</li>
-            <li>execution time: {{ tot_time }}s</li>
+            {% for lift, drag, angle in res %}
+            <li><b>{{angle}}</b></li>
+            <li>Avrage lift: {{lift}}</li>
+            <li>Avrage drag: {{drag}}</li>
+            <li>.............................</li>
+            {% endfor %}
         </ul>
   
 </body>

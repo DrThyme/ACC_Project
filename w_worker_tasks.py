@@ -76,7 +76,7 @@ def calc_lift_force(ang):
     bucket_name = "G1_Project_result"
     fp = "/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/"+str(angle)+"_results/drag_ligt.m"
     try:
-        (av_l, av_d) = calc_average("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/"+str(angle)+"_results/drag_ligt.m")
+        (av_l, av_d, angle) = calc_average("/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/"+str(angle)+"_results/drag_ligt.m")
     except:
         pass
 
