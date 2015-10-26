@@ -65,7 +65,7 @@ def calc_lift_force(ang):
     
     
     
-    cmdy="/home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 ../msh/r0a"+angle+"n200.xml"
+    cmdy="./home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 ../msh/r0a"+angle+"n200.xml"
     cmdmv = "mv /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/results /home/ubuntu/ACC_Project/naca_airfoil/navier_stokes_solver/"+str(angle)+"_results"
     print "running cmd: "+cmdy
     print "running cmd: "+cmdmv
