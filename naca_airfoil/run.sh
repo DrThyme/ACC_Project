@@ -19,9 +19,9 @@
 # Path to GMSH binary
 GMSHBIN="/usr/bin/gmsh"
 # Path to dir where geo files will be stored
-GEODIR="geo"
+GEODIR="/home/ubuntu/ACC_Project/naca_airfoil/geo"
 # Path to dir where msh files will be stored
-MSHDIR="msh"
+MSHDIR="/home/ubuntu/ACC_Project/naca_airfoil/msh"
 # NACA four digit airfoil (typically NACA0012)
 NACA1=0
 NACA2=0
@@ -39,7 +39,7 @@ for i in `seq 0 $n_angles`;
 do
   angle=$(($angle_start + $anglediff*i))
   geofile=a${angle}n${n_nodes}.geo
-  ./naca2gmsh_geo.py $NACA1 $NACA2 $NACA3 $NACA4 $angle $n_nodes > $GEODIR/$geofile
+  ./ACC_Project/naca_airfoil/naca2gmsh_geo.py $NACA1 $NACA2 $NACA3 $NACA4 $angle $n_nodes > $GEODIR/$geofile
 done
 for i in `ls $GEODIR`; do
   mshfile="$(echo $i|sed -e 's/geo/msh/')";
