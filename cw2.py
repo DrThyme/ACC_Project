@@ -102,7 +102,7 @@ def start_workers(bro_ip,ip_list):
     return ip_aux
 
 """
-
+Starts the utils.py script on the broker, which allows the broker to run the entire application.
 """        
 def start_broker(bro_ip):
     #cmd = "cd /home/ubuntu/tweet_ass/task2/;celery flower -A remote --address=0.0.0.0 --port=5000"
@@ -131,6 +131,33 @@ def start_broker(bro_ip):
     except Exception as e:
         print e
 
+## CREATED BY Brian Khuu
+## MODIFIED BY Tim Josefsson
+## update_pddrogress() : Displays or updates a console progress bar
+## Accepts a float between 0 and 1. Any int will be converted to a float.
+## A value under 0 represents a 'halt'.
+## A value at 1 or bigger represents 100%
+"""
+Creates and updates a progress bar.
+"""
+def update_progress(progress):
+    barLength = 10 # Modify this to change the length of the progress bar
+    status = ""
+    if isinstance(progress, int):
+        progress = float(progress)
+    if not isinstance(progress, float):
+        progress = 0
+        status = "error: progress var must be float\r\n"
+    if progress < 0:
+        progress = 0
+        status = "Halt...\r\n"
+    if progress >= 1:
+        progress = 1
+        status = "Done...\r\n"
+    block = int(round(barLength*progress))
+    text = "\r####   Percent: [{0}] {1}% {2}    ####".format( "#"*block + "-"*(barLength-block), progress*100, status)
+    sys.stdout.write(text)
+    sys.stdout.flush()
 
 ##########################################################################
 ##########################################################################
@@ -253,13 +280,18 @@ for wname in worker_names:
         print wname + " IP:\t"+ str(ipp)
 
 
-print "*** installing packages... ***"
-wait_time = 290
-for i in range(0,29):
-    time.sleep(10)
-    wait_time -= 10
-    print str(wait_time)+"s remaining..."
-print "*** Packages Installed!!! ***"
+print "*** Installing Packages... ***"
+print "*** Estimated time: 300s   ***"
+for i in range(100):
+	time.sleep(3)
+	x = i/100.0
+	update_progress(x)
+#wait_time = 290
+#for i in range(0,29):
+#    time.sleep(10)
+#    wait_time -= 10
+#    print str(wait_time)+"s remaining..."
+print "\n*** Packages Installed!!! ***"
 
 
     
