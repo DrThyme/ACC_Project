@@ -10,6 +10,7 @@ packages:
 runcmd:
     - pip install celery
     - pip install Flask
+    - pip install pickledb
     - git clone https://github.com/DrThyme/ACC_Project.git /home/ubuntu/ACC_Project
     - cd /home/ubuntu/ACC_Project
     - export C_FORCE_ROOT="true"

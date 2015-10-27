@@ -31,7 +31,7 @@
 <p>Running process with the following parameters:</p>
 <p>Finished after {{tot_time}}s</p>
         <ul>
-            {% for lift, drag, angle, dl in res %}
+            {% for lift, drag, angle, dl in resy %}
             <li><b>{{angle}}°</b></li>
             <li>Avrage lift: {{lift}}</li>
             <li>Avrage drag: {{drag}}</li>
@@ -42,6 +42,7 @@
     </div>
 
     <script>
+     /*
 $(function () {
     $('#ccontainer').highcharts({
         title: {
@@ -53,7 +54,7 @@ $(function () {
             x: -20
         },
         xAxis: {
-            categories: [{% for lift, drag, angle, dl in res %}
+            categories: [{% for lift, drag, angle, dl in resy %}
                 "{{angle}}",
                          
                          {% endfor %}
@@ -81,13 +82,14 @@ $(function () {
         },
         series: [{
             name: 'Tokyo',
-            data: [{% for lift, drag, angle, dl in res %}
+            data: [{% for lift, drag, angle, dl in resy %}
                 {{lift}},
                    {% endfor %}
                 0.0]
         }]
     });
-        });
+     });
+     */
     </script>
 </body>
 </html>     
