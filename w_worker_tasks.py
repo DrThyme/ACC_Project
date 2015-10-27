@@ -89,7 +89,7 @@ def calc_lift_force(ang):
     print "XML FILE:" + "'"+xmlfile+"'"
     try:
         
-        p = Popen(["./naca_airfoil/navier_stokes_solver/airfoil","10","0.0001","10.","1",xmlfile])
+        p = Popen(["./naca_airfoil/navier_stokes_solver/airfoil","10","0.0001","10.","1",xmlfile],shell=True, stdout=PIPE, stderr=PIPE)
         p.wait()
 
     except CalledProcessError as e:
