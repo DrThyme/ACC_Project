@@ -86,7 +86,7 @@ def calc_lift_force(ang):
         print e
 
     try:
-        check_call(cmdv)
+        check_call(cmdmv,shell=True)
     except CalledProcessError as e:
         print e
         
