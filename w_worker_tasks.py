@@ -22,6 +22,8 @@ passw = "P_W"
 celery = Celery('tasks', backend='amqp',
                       broker='amqp://W_NAME:hej123@'+broker_ip+'/cluuster')
 
+celery.conf.CELERY_REDIRECT_STDOUTS = False
+
 
 
 
@@ -87,19 +89,28 @@ def calc_lift_force(ang):
     print "XML FILE:" + "'"+xmlfile+"'"
     try:
         os.system('./naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 '+xmlfile)
-        #p = Popen(["./naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 "+str(xmlfile)])
+        p = Popen(["./naca_airfoil/navier_stokes_solver/airfoil","10","0.0001","10.","1","xmlfile"])
+        p.wait()
+        """
         line_count = 0
         m_time = 90
         t_time = 0
-        while line_count < 238:
+        
+        while True:
             if t_time > m_time:
                 break
             else:
                 time.sleep(5)
-                with open('/home/ubuntu/ACC_Project/results/drag_ligt.m') as f:
-                    line_count = sum(1 for _ in f)
+                with open('drag_ligt.m') as fh:
+                    for line in fh:
+                        pass
+                    last = line
+                    ll = zip(*(last.strip().split('\t')))
+                    a,b,c = ll[0]
+                    if a == "1":
+                        break
                 t_time += 5
-
+        """
     except CalledProcessError as e:
         print e
 
