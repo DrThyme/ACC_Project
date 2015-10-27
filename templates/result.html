@@ -7,37 +7,6 @@
   <!-- Plotly.js -->
   
 
-  <script type="text/javascript">
-  window.onload = function () {
-    var chart = new CanvasJS.Chart("chartContainer",
-    {
-      theme: "theme2",
-      title:{
-        text: "Avrage Lift force"
-      },
-      animationEnabled: true,
-      axisX: {
-        
-      },
-      axisY:{
-        
-      },
-      data: [
-      {        
-        type: "line",
-        //lineThickness: 3,        
-          dataPoints: [
-        {% for lift, drag, angle, dl in res %}
-        { x: {{angle}}, y: {{lift}} },
-        {% endfor %}
-          ]
-      }
-      ]
-    });
-
-chart.render();
-}
-</script>
 <script type="text/javascript" src="canvasjs.min.js"></script>
 <style>
  .wrapper{
