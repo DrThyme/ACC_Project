@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <head>
-  <!-- D3.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <!-- Plotly.js -->
   
 
 
@@ -15,40 +12,6 @@
  }
 </style>
 
-
-<script type="text/javascript"
-          src="https://www.google.com/jsapi?autoload={
-            'modules':[{
-              'name':'visualization',
-              'version':'1',
-              'packages':['corechart']
-            }]
-          }"></script>
-
-    <script type="text/javascript">
-      google.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Angle', 'Drag', 'Lift'],
-          {% for lift, drag, angle, dl in res %}
-          ['{{angle}}°',  {{drag}},      {{lift}}],
-          {% endfor %}
-          
-          ['0',  0,      0]
-        ]);
-
-        var options = {
-          title: 'Company Performance',
-          curveType: 'function',
-          legend: { position: 'bottom' }
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-        chart.draw(data, options);
-      }
-    </script>
  
 </head>
 <body>
