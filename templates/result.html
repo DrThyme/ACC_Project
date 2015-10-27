@@ -14,6 +14,41 @@
      padding:40px;
  }
 </style>
+
+ <script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      theme: "theme2",
+      title:{
+        text: "Earthquakes - per month"
+      },
+      animationEnabled: true,
+      axisX: {        
+      },
+      axisY:{
+        includeZero: false
+        
+      },
+      data: [
+      {        
+        type: "line",
+        //lineThickness: 3,        
+          dataPoints: [
+        {% for lift, drag, angle, dl in res %}
+        { x: {{angle}}, y: {{lift}}},
+        {% endfor %}
+        { x: 0, y: 0}
+        ]
+      }
+      ]
+    });
+
+chart.render();
+}
+</script>
+<script type="text/javascript" src="/assets/script/canvasjs.min.js"></script>
+
 </head>
 <body>
 <!-- Plotly chart will be drawn inside this DIV -->
