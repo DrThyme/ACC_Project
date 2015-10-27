@@ -55,7 +55,7 @@ def calc_lift_force(ang):
 # dolfin-convert --output xml ACC_Project/naca_airfoil/msh/r0a21n200.msh ACC_Project/naca_airfoil/msh/r0a21n200.xml
     try:
         conv_cmd = "dolfin-convert --output xml naca_airfoil/msh/r0a"+angle+"n200.msh naca_airfoil/msh/r0a"+angle+"n200.xml"
-        return_code = call(conv_cmd, shell=True)
+        return_code = check_call(conv_cmd, shell=True)
     except CalledProcessError as e:
         print e
     print "Running CMD: "+conv_cmd
@@ -81,10 +81,15 @@ def calc_lift_force(ang):
     xmlfile = "naca_airfoil/msh/r0a"+angle+"n200.xml"
     print "XML FILE:" + "'"+xmlfile+"'"
     try:
-        check_call(['sudo', './naca_airfoil/navier_stokes_solver/airfoil',"10","0.0001","10.","1",xmlfile])
+        check_call(['./naca_airfoil/navier_stokes_solver/airfoil',"10","0.0001","10.","1",xmlfile])
     except CalledProcessError as e:
         print e
-    os.system(cmdmv)
+
+    try:
+        check_call(cmdv)
+    except CalledProcessError as e:
+        print e
+        
 
 
     # TODO: UPLOAD ALL FILES
