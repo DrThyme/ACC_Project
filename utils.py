@@ -35,17 +35,17 @@ celery = Celery('tasks', backend='amqp',
 
 
 
-
 def input_form_user(min_ang,max_ang,nr):
-    min_angle = int(min_ang) # 0
-    max_angle = int(max_ang) # 30
-    nr_angles = int(nr) # 10
+    min_angle = int(min_ang)
+    max_angle = int(max_ang)
+    nr_angles = int(nr)
 
     incr_angle = (max_angle - min_angle) / nr_angles # 0.3
     if incr_angle < 1:
         incr_angle = 1
     else:
         incr_angle = int(incr_angle)
+    
     print "INCR_ANGLE: " +str(incr_angle)
     i = min_angle
     angle_list = []
@@ -54,13 +54,6 @@ def input_form_user(min_ang,max_ang,nr):
         print "adding angle "+ str(i)
         i += incr_angle
     return angle_list
-
-def main(min_ang,max_ang,nr):
-    angle_list = input_form_user(min_ang,max_ang,nr)
-    create_tasks(angle_list)
-
-
-
 
 
 def create_tasks(angle_list):
@@ -71,8 +64,6 @@ def create_tasks(angle_list):
     while (group_result.ready() == False):
         time.sleep(2)
     res = group_result.get() # list of tuples: (i,av_lift,av_drag)
-    # TODO: parse, and display the data
-
 
 
 """
@@ -103,8 +94,7 @@ def my_form():
 
 
 @apps.route('/', methods=['POST'])
-def start():
-    
+def start():   
     maxAngle = request.form['maxAngle']
     minAngle = request.form['minAngle']
     numSamples = request.form['numSamples']
@@ -113,9 +103,8 @@ def start():
     
     angle_list = input_form_user(minAngle,maxAngle,numSamples)
     
-    start = time.time()
-    
-    print "STARTRING!!!!!!!"
+    start = time.time()  
+    print "The process have started!"
     tasks = [calc_lift_force.s(angle) for angle in angle_list]
     task_group = group(tasks)
     group_result = task_group()
@@ -124,21 +113,12 @@ def start():
         time.sleep(2)
     res = group_result.get() # list of tuples: (i,av_lift,av_drag)
 
-
     for i in res:
         print i
-    
-    #main(maxAngle,minAngle,numSamples)
-    
+   
     end = time.time()
     tot_time = end-start
-    return render_template("result.html",res=res,tot_time=tot_time)
-
-
-@apps.route('/result', methods=['GET'])
-def getResult():
-    return "The tasks have all been completed. And the results are stored in the container."
-  
+    return render_template("result.html",res=res,tot_time=tot_time) 
 
 if __name__ == '__main__':
     
