@@ -5,14 +5,49 @@
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <!-- Plotly.js -->
-  <script src="https://d14fo0winaifog.cloudfront.net/plotly-basic.js"></script>
   
+
+  <script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      theme: "theme2",
+      title:{
+        text: "Avrage Lift force"
+      },
+      animationEnabled: true,
+      axisX: {
+        
+      },
+      axisY:{
+        
+      },
+      data: [
+      {        
+        type: "line",
+        //lineThickness: 3,        
+          dataPoints: [
+        {% for lift, drag, angle, dl in res %}
+        { x: {{angle}}, y: {{lift}} },
+        {% endfor %}
+          ]
+      }
+      ]
+    });
+
+chart.render();
+}
+</script>
+<script type="text/javascript" src="canvasjs.min.js"></script>
+
 </head>
 <body>
 <!-- Plotly chart will be drawn inside this DIV -->
 
 
-<h1>RESULT</h1>
+    <h1>RESULT</h1>
+    <div id="chartContainer" style="height: 300px; width: 100%;">
+  </div>
 <p>Running process with the following parameters:</p>
 <p>Finished after {{tot_time}}s</p>
         <ul>
