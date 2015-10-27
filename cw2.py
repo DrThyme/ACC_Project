@@ -75,8 +75,8 @@ def start_workers(bro_ip,ip_list):
             
         else:
             worker_name = "workerzon"+str(x)
-            cmd = 'cd /home/ubuntu/ACC_Project/;python parse_file.py ' + str(bro_ip)+' '+str(openstack_pw)+ ' '+str(worker_name)+' '+str(openstack_usrname)+';cd /home/ubuntu/ACC_Project/;export LC_ALL="en_US.utf-8";celery worker -l info --concurrency=1 -A worker_tasks'
-                #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1])+ " "+str(worker_name)+";celery worker -l info -A remote"
+            cmd = 'cd /home/ubuntu/ACC_Project/;python parse_file.py ' + str(bro_ip)+' '+str(openstack_pw)+ ' '+str(worker_name)+' '+str(openstack_usrname)+';cd /home/ubuntu/ACC_Project/;export LC_ALL="en_US.utf-8";celery worker -l info --concurrency=1 -A worker_tasks &'
+            #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1])+ " "+str(worker_name)+";celery worker -l info -A remote"
             x+=1
         try:
             
