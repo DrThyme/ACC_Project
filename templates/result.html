@@ -7,7 +7,7 @@
   <!-- Plotly.js -->
   
 
-<script type="text/javascript" src="canvasjs.min.js"></script>
+
 <style>
  .wrapper{
      margin:40px;
@@ -15,47 +15,49 @@
  }
 </style>
 
- <script type="text/javascript">
-  window.onload = function () {
-    var chart = new CanvasJS.Chart("chartContainer",
-    {
-      theme: "theme2",
-      title:{
-        text: "Earthquakes - per month"
-      },
-      animationEnabled: true,
-      axisX: {        
-      },
-      axisY:{
-        includeZero: false
-        
-      },
-      data: [
-      {        
-        type: "line",
-        //lineThickness: 3,        
-          dataPoints: [
-        {% for lift, drag, angle, dl in res %}
-        { x: {{angle}}, y: {{lift}}},
-        {% endfor %}
-        { x: 0, y: 0}
-        ]
+
+<script type="text/javascript"
+          src="https://www.google.com/jsapi?autoload={
+            'modules':[{
+              'name':'visualization',
+              'version':'1',
+              'packages':['corechart']
+            }]
+          }"></script>
+
+    <script type="text/javascript">
+      google.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Angle', 'Drag', 'Lift'],
+          {% for lift, drag, angle, dl in res %}
+          ['{{angle}}°',  {{drag}},      {{lift}}],
+          {% endfor %}
+          
+          ['0',  0,      0]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
       }
-      ]
-    });
-
-chart.render();
-}
-</script>
-<script type="text/javascript" src="/assets/script/canvasjs.min.js"></script>
-
+    </script>
+ 
 </head>
 <body>
 <!-- Plotly chart will be drawn inside this DIV -->
 
     <div class="wrapper">
-    <h1>RESULT</h1>
-    <div id="chartContainer" style="height: 300px; width: 100%;">
+        <h1>RESULT</h1>
+        <div id="curve_chart" style="width: 900px; height: 500px"></div>
+    
   </div>
 <p>Running process with the following parameters:</p>
 <p>Finished after {{tot_time}}s</p>
