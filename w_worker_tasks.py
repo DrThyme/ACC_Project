@@ -89,6 +89,18 @@ calculate the average drag and lift force for that angle. Finally the function w
         p = Popen(['./naca_airfoil/navier_stokes_solver/airfoil',"10","0.0001","10.","1",xmlfile])
         #p = Popen(["./naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 "+str(xmlfile)])
         p.wait()
+        line_count = 0
+        m_time = 90
+        t_time = 0
+        while line_count < 220:
+            if t_time > m_time:
+                break
+            else:
+                time.sleep(5)
+                with open('/home/ubuntu/ACC_Project/'+str(angle)+'_results/drag_ligt.m') as f:
+                    line_count = sum(1 for _ in f)
+                t_time += 5
+
     except CalledProcessError as e:
         print e
 
