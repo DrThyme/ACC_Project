@@ -7,13 +7,13 @@ import paramiko
 
 
 img_name = 'MOLNS_OpenStack_accpro4_1444644885'
-"""
-PRIV_KEY_PATH = '/Users/adamruul/datormoln/cloud.key'
-PUB_KEY_PATH = '/Users/adamruul/datormoln/cloud.key.pub'
-KEY_NAME= 'l3_key_r'
-"""
+#PRIV_KEY_PATH = '/Users/adamruul/datormoln/cloud.key'
+#PUB_KEY_PATH = '/Users/adamruul/datormoln/cloud.key.pub'
+#KEY_NAME= 'l3_key_r'
+
 PRIV_KEY_PATH = os.environ['PRIV_KEY']
 PUB_KEY_PATH = os.environ['PUB_KEY']
+
 if len(sys.argv) < 1:
     print "*** ERROR: wrong input!!!!!!!!!! ***"
     print "Usage:"
@@ -22,20 +22,26 @@ if len(sys.argv) < 1:
     print "python cw2.py johndoe banana 3"
     sys.exit(0)
 else:
-    """
-    NR_OF_WORKERS = int(sys.argv[3]) + 1
-    openstack_pw = sys.argv[2]
-    openstack_usrname = sys.argv[1]
-    """
+    # NR_OF_WORKERS = int(sys.argv[3]) + 1
+    # openstack_pw = sys.argv[2]
+    # openstack_usrname = sys.argv[1]
     NR_OF_WORKERS = int(os.environ['NR_WORKERS']) + 1
     openstack_usrname = os.environ['OS_USERNAME']
     openstack_pw = os.environ['OS_PASSWORD']
     print(chr(27) + "[2J")
     print "*** Creation Initiated ***"
-    
+
+
+"""
+Does something?
+"""    
 def shell_escape(arg):
     return "'%s'" % (arg.replace(r"'", r"'\''"), )
 
+"""
+Attaches a floating ip to a provided instance. The function will first check
+if there are any unused floating ips available, if not one will be created.
+"""
 def attach_ip(cli,ins):
     iplist = cli.floating_ips.list()
     for ip_obj in iplist:
@@ -53,7 +59,9 @@ def attach_ip(cli,ins):
         print "XXXXXXXXXX Failed to attach ip! XXXXXXXXXXX"
 
 
-
+"""
+Starts the parse_file.py application on workers and broker. Also starts the celery workers on each worker instance.
+"""
 def start_workers(bro_ip,ip_list):
     x = 1
     ip_aux = ip_list
@@ -93,7 +101,9 @@ def start_workers(bro_ip,ip_list):
         ssh.close()
     return ip_aux
 
-        
+"""
+
+"""        
 def start_broker(bro_ip):
     #cmd = "cd /home/ubuntu/tweet_ass/task2/;celery flower -A remote --address=0.0.0.0 --port=5000"
     
@@ -122,7 +132,9 @@ def start_broker(bro_ip):
         print e
 
 
-    
+##########################################################################
+##########################################################################
+#### Main functionality 
 
 config = {'username':os.environ['OS_USERNAME'], 
           'api_key':os.environ['OS_PASSWORD'],
@@ -132,25 +144,28 @@ config = {'username':os.environ['OS_USERNAME'],
 
 nc = Client('2',**config)
 
-# Set parameters
+# Set the parameters for the instance, if key pair does not exist
+# create the key pair using the provided keys. 
 if not nc.keypairs.findall(name="l3_key_r"):
     with open(os.path.expanduser(PUB_KEY_PATH)) as fpubkey:
         nc.keypairs.create(name="l3_key_r", public_key=fpubkey.read())
-image = nc.images.find(name=img_name) # RuulSnap is also good
+image = nc.images.find(name=img_name)
 flavor = nc.flavors.find(name="m1.medium")
 
 
 
-# Create instance
+# Create instance, utilizing the provided cloud init file.
 with open('broker/userdata.yml', 'r') as userdata:
-    instance = nc.servers.create(name="Adamzon-Broker", image=image, flavor=flavor, key_name="l3_key_r",userdata=userdata)
+    instance = nc.servers.create(name="Group1-Broker", image=image, flavor=flavor, key_name="l3_key_r",userdata=userdata)
 status = instance.status
 while status == 'BUILD':
     time.sleep(3)
     instance = nc.servers.get(instance.id)
     status = instance.status
-print "\n*** Adamzon-Broker is now: %s ***" % status
+print "\n*** Group1-Broker is now: %s ***" % status
 
+
+# Configure security group. Opening neccessary ports.
 secgroup = nc.security_groups.find(name="default")
 
 try:
@@ -189,13 +204,15 @@ try:
 except Exception as e:
     pass
 
+
+# Start
 worker_names = []
 
 #with open('userdata.yml', 'r') as userdata:
     # SET TO NUMBER OF WORKERS
 wimage = nc.images.find(name=img_name)
 for x in range (0,NR_OF_WORKERS):
-    worker_name = "Adamzon-Worker-"+str(x)
+    worker_name = "Group1-Worker-"+str(x)
     worker_names.append(worker_name)
     with open('userdata.yml', 'r') as udata:
         instance = nc.servers.create(name=worker_name, image=wimage, flavor=flavor, key_name="l3_key_r", userdata=udata)
@@ -204,15 +221,15 @@ for x in range (0,NR_OF_WORKERS):
         time.sleep(5)
         instance = nc.servers.get(instance.id)
         status = instance.status
-    if worker_name != "Adamzon-Worker-0":
+    if worker_name != "Group1-Worker-0":
         print "*** " +worker_name+ " is now running  ***"
 
 
 # Assign Floating IP
-ins = nc.servers.find(name='Adamzon-Broker')
+ins = nc.servers.find(name='Group1-Broker')
 iip = attach_ip(nc,ins)
 
-print "Adamzon-Broker IP:\t "+ str(iip)
+print "Group1-Broker IP:\t "+ str(iip)
 
 ip_details = []
 wips = []
@@ -221,18 +238,18 @@ for wname in worker_names:
     ins = nc.servers.find(name=wname)
     ipp = attach_ip(nc,ins)
     wips.append(str(ipp))
-    if wname != "Adamzon-Worker-0":
+    if wname != "Group1-Worker-0":
         ip_details.append((wname,ipp))
     else:
         serverlist = nc.servers.list()
         for server in serverlist:
-            if server.name == 'Adamzon-Worker-0':
+            if server.name == 'Group1-Worker-0':
                 server.delete()
                 #print "Deleted aux-worker!!!!!"
                 wips.remove(str(ipp))
             else:
                 pass
-    if wname != "Adamzon-Worker-0":
+    if wname != "Group1-Worker-0":
         print wname + " IP:\t"+ str(ipp)
 
 
@@ -250,7 +267,7 @@ new_ip_list = start_workers(str(iip),wips)
 start_broker(str(iip))
 
 print "================ DETAILS ======================================"
-print "Adamzon-Broker:\t\t"+str(iip)
+print "Group1-Broker:\t\t"+str(iip)
 for (n,i) in ip_details:
     print n + ":\t"+ str(i)
 print "\nFlower dashboard available at: \thttp://" + str(iip) + ":5001"
