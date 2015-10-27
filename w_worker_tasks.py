@@ -88,7 +88,6 @@ calculate the average drag and lift force for that angle. Finally the function w
     try:
         os.system('./naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 '+xmlfile)
         #p = Popen(["./naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 "+str(xmlfile)])
-        p.wait()
         line_count = 0
         m_time = 90
         t_time = 0
