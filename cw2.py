@@ -159,9 +159,9 @@ def update_progress(progress):
     sys.stdout.write(text)
     sys.stdout.flush()
 
-##########################################################################
-##########################################################################
-#### Main functionality 
+############################
+#### Main functionality #### 
+############################
 
 config = {'username':os.environ['OS_USERNAME'], 
           'api_key':os.environ['OS_PASSWORD'],
@@ -232,7 +232,7 @@ except Exception as e:
     pass
 
 
-# Start
+# Start a number of workers as specified by the user.
 worker_names = []
 
 #with open('userdata.yml', 'r') as userdata:
@@ -252,7 +252,7 @@ for x in range (0,NR_OF_WORKERS):
         print "*** " +worker_name+ " is now running  ***"
 
 
-# Assign Floating IP
+# Assign Floating IP to Broker and workers.
 ins = nc.servers.find(name='Group1-Broker')
 iip = attach_ip(nc,ins)
 
@@ -280,6 +280,7 @@ for wname in worker_names:
         print wname + " IP:\t"+ str(ipp)
 
 
+# Wait for all instances to successfully install all the packages in cloud init file.
 print "*** Installing Packages... ***"
 print "*** Estimated time: 300s   ***"
 for i in range(100):
