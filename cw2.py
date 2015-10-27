@@ -7,24 +7,12 @@ import paramiko
 
 
 img_name = 'MOLNS_OpenStack_accpro4_1444644885'
-#PRIV_KEY_PATH = '/Users/adamruul/datormoln/cloud.key'
-#PUB_KEY_PATH = '/Users/adamruul/datormoln/cloud.key.pub'
-#KEY_NAME= 'l3_key_r'
-
 PRIV_KEY_PATH = os.environ['PRIV_KEY']
 PUB_KEY_PATH = os.environ['PUB_KEY']
 
 if len(sys.argv) < 1:
-    print "*** ERROR: wrong input!!!!!!!!!! ***"
-    print "Usage:"
-    print "python cw2.py <openstack_username> <openstack_password> <nr_of_workers>"
-    print "EXAMPLE:"
-    print "python cw2.py johndoe banana 3"
     sys.exit(0)
 else:
-    # NR_OF_WORKERS = int(sys.argv[3]) + 1
-    # openstack_pw = sys.argv[2]
-    # openstack_usrname = sys.argv[1]
     NR_OF_WORKERS = int(os.environ['NR_WORKERS']) + 1
     openstack_usrname = os.environ['OS_USERNAME']
     openstack_pw = os.environ['OS_PASSWORD']
@@ -68,7 +56,7 @@ def start_workers(bro_ip,ip_list):
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         sshkey = paramiko.RSAKey.from_private_key_file(PRIV_KEY_PATH)
         if ip == bro_ip:
-                #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1]) + " brokerzon"
+                
             worker_name = "brokerzon"
             cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)
             
@@ -76,17 +64,17 @@ def start_workers(bro_ip,ip_list):
         else:
             worker_name = "workerzon"+str(x)
             cmd = 'cd /home/ubuntu/ACC_Project/;python parse_file.py ' + str(bro_ip)+' '+str(openstack_pw)+ ' '+str(worker_name)+' '+str(openstack_usrname)+';cd /home/ubuntu/ACC_Project/;export LC_ALL="en_US.utf-8";celery worker -l info --concurrency=1 -A worker_tasks &'
-            #cmd = "cd /home/ubuntu/tweet_ass/task2/;python set_connection.py " + str(bro_ip)+" "+str(sys.argv[1])+ " "+str(worker_name)+";celery worker -l info -A remote"
+            
             x+=1
         try:
             
             ssh.connect(str(ip), username='ubuntu', pkey=sshkey)
             print "*** SSH Connection Established to: "+str(ip)+" ***"
-            #print "Running command: "+cmd
+            
             print "*** Running command: "+cmd+" ***"
             stdin,stdout,stderr = ssh.exec_command(cmd)
-            #print "Worker Started!"
-            #type(stdin)
+            
+            
         except Exception as e:
             print e
         print "*** Closing Connection ***"
@@ -99,7 +87,7 @@ def start_broker(bro_ip):
     """
     Starts the utils.py script on the broker, which allows the broker to run the entire application.
     """
-    #cmd = "cd /home/ubuntu/tweet_ass/task2/;celery flower -A remote --address=0.0.0.0 --port=5000"
+    
     
     cmd = "cd /home/ubuntu/ACC_Project/;celery flower -A worker_tasks --address=0.0.0.0 --port=5001"
     ssh = paramiko.SSHClient()
@@ -228,9 +216,6 @@ except Exception as e:
 
 # Start a number of workers as specified by the user.
 worker_names = []
-
-#with open('userdata.yml', 'r') as userdata:
-    # SET TO NUMBER OF WORKERS
 wimage = nc.images.find(name=img_name)
 for x in range (0,NR_OF_WORKERS):
     worker_name = "Group1-Worker-"+str(x)
@@ -266,7 +251,6 @@ for wname in worker_names:
         for server in serverlist:
             if server.name == 'Group1-Worker-0':
                 server.delete()
-                #print "Deleted aux-worker!!!!!"
                 wips.remove(str(ipp))
             else:
                 pass
@@ -281,11 +265,6 @@ for i in range(100):
 	time.sleep(3)
 	x = i/100.0
 	update_progress(x)
-#wait_time = 290
-#for i in range(0,29):
-#    time.sleep(10)
-#    wait_time -= 10
-#    print str(wait_time)+"s remaining..."
 print "\n*** Packages Installed!!! ***"
 
 

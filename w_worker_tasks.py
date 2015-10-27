@@ -10,28 +10,16 @@ from calculate_lift_drag import calc_average
 from subprocess import CalledProcessError, check_output, check_call, call, Popen, PIPE, STDOUT
 
 
-"""
-python worker_tasks <user_name> <password> <
-
-"""
-
 uname = "U_NAME"
 broker_ip = "BROOKER_IP_TEMP"
 passw = "P_W"
-
 celery = Celery('tasks', backend='amqp',
                       broker='amqp://W_NAME:hej123@'+broker_ip+'/cluuster')
-
-#celery.conf.CELERY_REDIRECT_STDOUTS = False
-
 DEVNULL = open(os.devnull, 'wb')
-
-
 config = {'user':uname, 
           'key':passw,
           'tenant_name':'ACC-Course',
           'authurl':'http://smog.uppmax.uu.se:5000/v2.0'}
-
 conn = swiftclient.client.Connection(auth_version=2, **config)
 
 
@@ -42,13 +30,8 @@ def calc_lift_force(ang):
     The function will run the airfoil application, convert the results from that application to a .xml file and
     calculate the average drag and lift force for that angle. Finally the function will upload the results to a bucket. 
     """
-    # What shell-command-method should we use?
-    # http://stackoverflow.com/questions/89228/calling-an-external-command-in-python
-    """
-    THIS WORKS IF LC_ALL IS EXPORTED
-    """
 
-    # THIS VAR IS ONLY FOR TESTING
+    
     angle = str(int(ang))
     cmdx = "./naca_airfoil/run.sh "+angle+" "+angle+" 1 200 0"
     print "RUN SH ON: "+angle
@@ -58,8 +41,7 @@ def calc_lift_force(ang):
         return_code = check_call(cmdx, shell=True)
     except CalledProcessError as e:
         print e
-    #conv_cmd = "cd /home/ubuntu/ACC_Project;./convert_to_xml.sh /home/ubuntu/ACC_Project/naca_airfoil/msh/"
-# dolfin-convert --output xml ACC_Project/naca_airfoil/msh/r0a21n200.msh ACC_Project/naca_airfoil/msh/r0a21n200.xml
+
     try:
         conv_cmd = "dolfin-convert --output xml naca_airfoil/msh/r0a"+angle+"n200.msh naca_airfoil/msh/r0a"+angle+"n200.xml"
         return_code = check_call(conv_cmd, shell=True)
@@ -67,44 +49,22 @@ def calc_lift_force(ang):
         print e
     print "Running CMD: "+conv_cmd
     
-    
-    
 
-    directory="/home/ubuntu/ACC_Project/naca_airfoil/msh/*"
-    
-    #result_folder = sorted(glob.glob(directory), key=os.path.getmtime)[::-1]
-    
-    
-    # *GET LIST OF FILENAME*
-    #for fil in result_folder:
-    
     
     
     cmdy="./naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 naca_airfoil/msh/r0a"+angle+"n200.xml"
     cmdmv = "mv /home/ubuntu/ACC_Project/results /home/ubuntu/ACC_Project/"+str(angle)+"_results"
-    print "running cmd: "+cmdy
-    print "running cmd: "+cmdmv
-    #os.system(cmdy)
     xmlfile = "naca_airfoil/msh/r0a"+angle+"n200.xml"
-    print "XML FILE:" + "'"+xmlfile+"'"
     try:
-        
         p = check_call(["./naca_airfoil/navier_stokes_solver/airfoil","10","0.0001","10.","1",xmlfile],stdout=DEVNULL, stderr=DEVNULL)
-        
-
     except CalledProcessError as e:
         print e
-
+        
     try:
         check_call(cmdmv,shell=True)
     except CalledProcessError as e:
         print e
-        
 
-
-    # TODO: UPLOAD ALL FILES
-    bucket_name = "G1_Project_result"
-    
     try:
         (av_l, av_d) = calc_average("/home/ubuntu/ACC_Project/"+str(angle)+"_results/drag_ligt.m")
     except:
@@ -113,14 +73,14 @@ def calc_lift_force(ang):
         pass
 
     fp = "/home/ubuntu/ACC_Project/"+str(angle)+"_results/drag_ligt.m"
+    bucket_name = "G1_Project_result"
     exturl = upload_result(angle,bucket_name,fp)
-    #return (av_l, av_d)
-    
     dl_url = "http://smog.uppmax.uu.se:8080/swift/v1/"+bucket_name+"/"+str(exturl)
+
     return (av_l, av_d, angle, dl_url)
     
 
-    # Function call Via shell or imported python-function?
+    
 
 
 
