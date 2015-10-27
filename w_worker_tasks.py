@@ -35,6 +35,11 @@ conn = swiftclient.client.Connection(auth_version=2, **config)
 
 @celery.task
 def calc_lift_force(ang):
+"""
+This function will do all the required work to calculate the drag and lift force for a specific angle.
+The function will run the airfoil application, convert the results from that application to a .xml file and
+calculate the average drag and lift force for that angle. Finally the function will upload the results to a bucket. 
+"""
     # What shell-command-method should we use?
     # http://stackoverflow.com/questions/89228/calling-an-external-command-in-python
     """

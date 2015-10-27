@@ -31,18 +31,11 @@ else:
     print(chr(27) + "[2J")
     print "*** Creation Initiated ***"
 
-
-"""
-Does something?
-"""    
-def shell_escape(arg):
-    return "'%s'" % (arg.replace(r"'", r"'\''"), )
-
+def attach_ip(cli,ins):
 """
 Attaches a floating ip to a provided instance. The function will first check
 if there are any unused floating ips available, if not one will be created.
 """
-def attach_ip(cli,ins):
     iplist = cli.floating_ips.list()
     for ip_obj in iplist:
         if ((getattr(ip_obj,'instance_id')) == None):
@@ -59,10 +52,10 @@ def attach_ip(cli,ins):
         print "XXXXXXXXXX Failed to attach ip! XXXXXXXXXXX"
 
 
+def start_workers(bro_ip,ip_list):
 """
 Starts the parse_file.py application on workers and broker. Also starts the celery workers on each worker instance.
 """
-def start_workers(bro_ip,ip_list):
     x = 1
     ip_aux = ip_list
     print "IPS:"
@@ -101,10 +94,11 @@ def start_workers(bro_ip,ip_list):
         ssh.close()
     return ip_aux
 
+        
+def start_broker(bro_ip):
 """
 Starts the utils.py script on the broker, which allows the broker to run the entire application.
-"""        
-def start_broker(bro_ip):
+"""
     #cmd = "cd /home/ubuntu/tweet_ass/task2/;celery flower -A remote --address=0.0.0.0 --port=5000"
     
     cmd = "cd /home/ubuntu/ACC_Project/;celery flower -A worker_tasks --address=0.0.0.0 --port=5001"
@@ -137,10 +131,10 @@ def start_broker(bro_ip):
 ## Accepts a float between 0 and 1. Any int will be converted to a float.
 ## A value under 0 represents a 'halt'.
 ## A value at 1 or bigger represents 100%
+def update_progress(progress):
 """
 Creates and updates a progress bar.
 """
-def update_progress(progress):
     barLength = 10 # Modify this to change the length of the progress bar
     status = ""
     if isinstance(progress, int):
@@ -155,7 +149,7 @@ def update_progress(progress):
         progress = 1
         status = "Done...\r\n"
     block = int(round(barLength*progress))
-    text = "\r####   Percent: [{0}] {1}% {2}    ####".format( "#"*block + "-"*(barLength-block), progress*100, status)
+    text = "\r*** Percent: [{0}] {1}% {2} ***".format( "#"*block + "-"*(barLength-block), progress*100, status)
     sys.stdout.write(text)
     sys.stdout.flush()
 
