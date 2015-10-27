@@ -12,14 +12,20 @@
  }
 </style>
 
- 
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+
+
+
 </head>
 <body>
 <!-- Plotly chart will be drawn inside this DIV -->
 
     <div class="wrapper">
         <h1>RESULT</h1>
-        <div id="curve_chart" style="width: 900px; height: 500px"></div>
+        <div id="ccontainer" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        
     
   </div>
 <p>Running process with the following parameters:</p>
@@ -34,6 +40,55 @@
             {% endfor %}
         </ul>
     </div>
+
+    <script>
+$(function () {
+    $('#ccontainer').highcharts({
+        title: {
+            text: 'Monthly Average Temperature',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Source: WorldClimate.com',
+            x: -20
+        },
+        xAxis: {
+            categories: [{% for lift, drag, angle, dl in res %}
+                "{{angle}}",
+                         
+                         {% endfor %}
+                0]
+                
+        },
+        yAxis: {
+            title: {
+                text: 'Temperature (°C)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [{% for lift, drag, angle, dl in res %}
+                {{lift}},
+                   {% endfor %}
+                0.0]
+        }]
+    });
+        });
+    </script>
 </body>
 </html>     
 
