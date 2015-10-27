@@ -7,7 +7,7 @@ import time
 import json
 import glob
 from calculate_lift_drag import calc_average
-from subprocess import CalledProcessError, check_output, check_call, call, Popen
+from subprocess import CalledProcessError, check_output, check_call, call, Popen, PIPE, STDOUT
 
 
 """
@@ -24,7 +24,7 @@ celery = Celery('tasks', backend='amqp',
 
 #celery.conf.CELERY_REDIRECT_STDOUTS = False
 
-
+DEVNULL = open(os.devnull, 'wb')
 
 
 config = {'user':uname, 
@@ -89,7 +89,7 @@ def calc_lift_force(ang):
     print "XML FILE:" + "'"+xmlfile+"'"
     try:
         
-        p = check_call(["./naca_airfoil/navier_stokes_solver/airfoil","10","0.0001","10.","1",xmlfile],shell=True, stdout=PIPE, stderr=PIPE)
+        p = check_call(["./naca_airfoil/navier_stokes_solver/airfoil","10","0.0001","10.","1",xmlfile],stdout=DEVNULL, stderr=DEVNULL)
         
 
     except CalledProcessError as e:

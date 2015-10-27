@@ -18,33 +18,29 @@ force (for different values of the other inputs to the program).
 Clone the repo using Git:
 
 ```bash
-git clone --bare https://github.com/DrThyme/ACC_Project.git
+git clone https://github.com/DrThyme/ACC_Project.git
 ```
 
 > Alternatively you can [download as .zip](https://github.com/DrThyme/ACC_Project/archive/master.zip)!
 
 #### USAGE
 
-Create instance based on image 'PROJECT1_BASE' and ssh into it.
-
-The 'PROJECT1_BASE'-image has the following installed:
-* fenics
-* git
-* pip
-* rabbitmq-server
-* gmsh
-* celery
-* Flask
-
-
+1. Run the setup script
 ```bash
-python cw2.py <openstack_username> <openstack_password>
-# SSH TO your broker and open flower in your broser
-cd ACC_Project
-source creds.sh
-python add_tasks.py
+source setup.sh
+# Enter your credentials etc.
 ```
-> In your userdata-file...Clone this repo
+> This requires that you have an account on the SMOG cloud (regionOne)
+
+2. Create your cluster (Note: this might take a while)
+```bash
+python cw2.py
+# URL to flower dashboard and Web UI will be printed printed in the terminal.
+```
+> This requires that you have an account on the SMOG cloud (regionOne)
+
+3. Run some calculations, using the Web-UI
+
 
 ## Examples
 
