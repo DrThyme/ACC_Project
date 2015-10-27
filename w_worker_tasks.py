@@ -9,7 +9,7 @@ import glob
 from calculate_lift_drag import calc_average
 from subprocess import CalledProcessError, check_output, check_call, call, Popen, PIPE, STDOUT
 import pickledb
-from utils import add_to_db
+
 
 
 
@@ -80,7 +80,7 @@ def calc_lift_force(ang):
     bucket_name = "G1_Project_result"
     exturl = upload_result(angle,bucket_name,fp)
     dl_url = "http://smog.uppmax.uu.se:8080/swift/v1/"+bucket_name+"/"+str(exturl)
-    add_to_db(angle,(av_l,av_d))
+    
     return (av_l, av_d, angle, dl_url)
     
 

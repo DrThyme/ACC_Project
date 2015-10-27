@@ -60,9 +60,9 @@ def check_db(angle):
         db.dump() 
         return False
 
-def add_to_db(angle,(av_l, av_d, angle, dl_url)):
+def add_to_db(ang,(av_l, av_d, angle, dl_url)):
     db = pickledb.load('example.db', False)
-    db.set(str(angle), (av_l, av_d, angle, dl_url))
+    db.set(str(ang), (av_l, av_d, angle, dl_url))
     db.dump()
     
 def get_from_db(angle):
