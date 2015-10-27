@@ -7,7 +7,7 @@ import time
 import json
 import glob
 from calculate_lift_drag import calc_average
-from subprocess import CalledProcessError, check_output, check_call, call
+from subprocess import CalledProcessError, check_output, check_call, call, Popen
 
 
 """
@@ -81,7 +81,9 @@ def calc_lift_force(ang):
     xmlfile = "naca_airfoil/msh/r0a"+angle+"n200.xml"
     print "XML FILE:" + "'"+xmlfile+"'"
     try:
-        check_call(['./naca_airfoil/navier_stokes_solver/airfoil',"10","0.0001","10.","1",xmlfile])
+        #p = Popen(['./naca_airfoil/navier_stokes_solver/airfoil',"10","0.0001","10.","1",xmlfile])
+        p = Popen(["./naca_airfoil/navier_stokes_solver/airfoil 10 0.0001 10. 1 "+str(xmlfile)])
+        p.wait()
     except CalledProcessError as e:
         print e
 
