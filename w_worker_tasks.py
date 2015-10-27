@@ -87,12 +87,12 @@ def calc_lift_force(ang):
         line_count = 0
         m_time = 90
         t_time = 0
-        while line_count < 220:
+        while line_count < 238:
             if t_time > m_time:
                 break
             else:
                 time.sleep(5)
-                with open('/home/ubuntu/ACC_Project/'+str(angle)+'_results/drag_ligt.m') as f:
+                with open('/home/ubuntu/ACC_Project/results/drag_ligt.m') as f:
                     line_count = sum(1 for _ in f)
                 t_time += 5
 
