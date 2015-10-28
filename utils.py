@@ -12,6 +12,17 @@ from worker_tasks import calc_lift_force
 
 
 def input_form_user(min_ang,max_ang,nr):
+    ''' input_from_user calculates which angles that should that 
+        lies between 'min_ang' and 'max_ang' 
+        when taking 'nr' or steps between them. 
+
+    Args:
+        min_ang (int) : lower limit
+        max_ang (int) : upper limit
+        nr (int) : number of steps between lower and upper limit
+    Returns:
+        angle_list (int list) : list of angles between max_ang and min_ang when taking 'nr' of steps  
+    '''
     min_angle = int(min_ang)
     max_angle = int(max_ang)
     nr_angles = int(nr)
@@ -32,15 +43,6 @@ def input_form_user(min_ang,max_ang,nr):
     return angle_list
 
 
-def create_tasks(angle_list):
-    tasks = [calc_lift_force.s(angle) for angle in angle_list]
-    task_group = group(tasks)
-    group_result = task_group()
-    print "Waiting for workers to finnish..."
-    while (group_result.ready() == False):
-        time.sleep(2)
-    res = group_result.get()
-
 
 #   ---REST API---
 apps = Flask(__name__)
@@ -51,6 +53,15 @@ def my_form():
 
 
 def check_db(angle):
+    ''' check_db checks if the key 'angle' exists in the database 
+
+    Args:
+        angle : the key (angle) that should be queried
+    Returns:
+        True if the key exists
+        False otherwise
+        
+    '''
     db = pickledb.load('example.db', False)
     x = db.get(str(angle))
     if x != None:
@@ -61,11 +72,26 @@ def check_db(angle):
         return False
 
 def add_to_db(ang,(av_l, av_d, angle, dl_url)):
+    ''' add_to_db adds a key/pair to the database
+
+    Args:
+        angle : the key (angle) that should be queried
+        (av_l,av_d,angle,dl_rul) : the value... A tuple of avrage lift force, avrage drag force, angle calculated on and download URL
+    Returns:
+        None
+    '''
     db = pickledb.load('example.db', False)
     db.set(str(ang), (av_l, av_d, angle, dl_url))
     db.dump()
     
 def get_from_db(angle):
+    ''' get_from_db returns the value of the given key 'angle'
+
+    Args:
+        angle : the key (angle) that should be queried
+    Returns:
+        x (tuple) : A tuple of avrage lift force, avrage drag force, angle calculated on and download URL
+    '''
     db = pickledb.load('example.db', False)
     x = db.get(str(angle))
     return x

@@ -77,7 +77,7 @@ def calc_lift_force(ang):
         pass
 
     fp = "/home/ubuntu/ACC_Project/"+str(angle)+"_results/drag_ligt.m"
-    bucket_name = "G1_Project_result"
+    bucket_name = "gr1_res"
     exturl = upload_result(angle,bucket_name,fp)
     dl_url = "http://smog.uppmax.uu.se:8080/swift/v1/"+bucket_name+"/"+str(exturl)
     
