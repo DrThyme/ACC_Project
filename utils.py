@@ -72,9 +72,9 @@ def get_from_db(angle):
 
 @apps.route('/result')
 def start():   
-    maxAngle = request.form['maxAngle']
-    minAngle = request.form['minAngle']
-    numSamples = request.form['numSamples']
+    maxAngle = request.args['maxAngle']
+    minAngle = request.args['minAngle']
+    numSamples = request.args['numSamples']
     chartID = 'chart_ID'
     chart_type = 'line'
     chart_height = 350
