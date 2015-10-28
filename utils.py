@@ -133,7 +133,7 @@ def start():
  
     xAxis = {"categories": xd}
     yAxis = {"title": {"text": 'Force'}}
-    print resy
+    
     return render_template('result.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
     
     
