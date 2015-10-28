@@ -75,6 +75,10 @@ def start():
     maxAngle = request.form['maxAngle']
     minAngle = request.form['minAngle']
     numSamples = request.form['numSamples']
+    chartID = 'chart_ID'
+    chart_type = 'line'
+    chart_height = 350
+
     if minAngle > maxAngle:
         return
     
@@ -118,9 +122,23 @@ def start():
     print "**** FOUND IN DATABSE: ****"
     for i in db_a_list:
         print i
+
+    chart = {"renderTo": chartID, "type": chart_type, "height": chart_height,}
+    sd = [a for (a,b,c,d) in resy]
+    sd2 = [b for (a,b,c,d) in resy]
+ 
+    series = [{"name": 'Avrage drag force', "data": sd}, {"name": 'Avrage Lift force', "data":  sd2}]
+   
+    title = {"text": 'Result plot'}
+    xd = [str(c) for (a,b,c,d) in resy]
+ 
+    xAxis = {"categories": xd}
+    yAxis = {"title": {"text": 'Force'}}
+  
+    return render_template('result.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
     
     
-    return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples,tot_time=tot_time)
+    #return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples,tot_time=tot_time)
     
 
 if __name__ == '__main__':
