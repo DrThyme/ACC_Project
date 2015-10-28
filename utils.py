@@ -70,11 +70,11 @@ def get_from_db(angle):
     x = db.get(str(angle))
     return x
     
-@apps.route('/', methods=['POST'])
+@apps.route('/result')
 def start():   
-    maxAngle = request.form['maxAngle']
-    minAngle = request.form['minAngle']
-    numSamples = request.form['numSamples']
+    maxAngle = request.args['maxAngle']
+    minAngle = request.args['minAngle']
+    numSamples = request.args['numSamples']
     if minAngle > maxAngle:
         return
     
@@ -94,6 +94,7 @@ def start():
         
     start = time.time()  
     print "The process have started!"
+    print "Creating " + str(len(a_list)) +" tasks*******"
     tasks = [calc_lift_force.s(angle) for angle in a_list]
     task_group = group(tasks)
     group_result = task_group()
@@ -114,8 +115,11 @@ def start():
     resy = sorted(resx, key=lambda tup: tup[2])
     print "sorted list of all:"
     print resy
-    print "db_a_list:"
-    print db_a_list
+    print "**** FOUND IN DATABSE: ****"
+    for i in db_a_list:
+        print i
+    
+    
     
     return render_template("result.html",resy=resy,tot_time=tot_time) 
 
