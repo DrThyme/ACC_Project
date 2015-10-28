@@ -69,12 +69,12 @@ def get_from_db(angle):
     db = pickledb.load('example.db', False)
     x = db.get(str(angle))
     return x
-    
-@apps.route('/result')
+
+@apps.route('/', methods=['POST'])
 def start():   
-    maxAngle = request.args['maxAngle']
-    minAngle = request.args['minAngle']
-    numSamples = request.args['numSamples']
+    maxAngle = request.form['maxAngle']
+    minAngle = request.form['minAngle']
+    numSamples = request.form['numSamples']
     if minAngle > maxAngle:
         return
     
@@ -120,8 +120,8 @@ def start():
         print i
     
     
+    return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples,tot_time=tot_time)
     
-    return render_template("result.html",resy=resy,tot_time=tot_time) 
 
 if __name__ == '__main__':
     apps.run(host='0.0.0.0',debug=True)

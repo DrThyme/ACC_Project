@@ -9,6 +9,7 @@ import paramiko
 img_name = 'MOLNS_OpenStack_accpro4_1444644885'
 PRIV_KEY_PATH = os.environ['PRIV_KEY']
 PUB_KEY_PATH = os.environ['PUB_KEY']
+KEYPAIR_NAME = os.environ['KP_NAME']
 
 if len(sys.argv) < 1:
     sys.exit(0)
