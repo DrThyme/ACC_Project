@@ -134,7 +134,7 @@ def start():
     xAxis = {"categories": xd}
     yAxis = {"title": {"text": 'Force'}}
     
-    return render_template('result.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
+    return render_template('result.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis,maxAngle=maxAngle,minAngle=minAngle,numSamples=numSamples,tot_time=tot_time)
     
     
     #return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples,tot_time=tot_time)
