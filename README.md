@@ -25,21 +25,21 @@ git clone https://github.com/DrThyme/ACC_Project.git
 
 #### USAGE
 
-1. Run the setup script
+##### Run the setup script
 ```bash
 source setup.sh
 # Enter your credentials etc.
 ```
 > This requires that you have an account on the SMOG cloud (regionOne)
 
-2. Create your cluster (Note: this might take a while)
+##### Create your cluster (Note: this might take a while)
 ```bash
 python cw2.py
 # URL to flower dashboard and Web UI will be printed printed in the terminal.
 ```
 > This requires that you have an account on the SMOG cloud (regionOne)
 
-3. Run some calculations, using the Web-UI
+##### Run some calculations, using the Web-UI
 
 
 ## Modifying the code
@@ -53,8 +53,6 @@ def calc_lift_force(ang):
 #....
 ```
 ##### And be called in utils.py 
-
-##### Run some FizzBuzz:
 ```Python
 @apps.route('/result')
 def start():
