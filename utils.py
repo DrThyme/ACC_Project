@@ -97,7 +97,7 @@ def get_from_db(angle):
     return x
 
 @apps.route('/result')
-def start():   
+def start():
     maxAngle = request.args['maxAngle']
     minAngle = request.args['minAngle']
     numSamples = request.args['numSamples']
@@ -131,10 +131,7 @@ def start():
     while (group_result.ready() == False):
         time.sleep(2)
     res = group_result.get() # (av_l, av_d, angle, dl_url)
-
-    for i in res:
-        print i
-   
+ 
     end = time.time()
     tot_time = end-start
     for (av_l,av_d,angle,dl_url) in res:
@@ -143,8 +140,6 @@ def start():
     resx = res + db_a_list
     resy = sorted(resx, key=lambda tup: int(tup[2]))
   
-    for i in db_a_list:
-        print i
 
     chart = {"renderTo": chartID, "type": chart_type, "height": chart_height,}
     sd = [a for (a,b,c,d) in resy]

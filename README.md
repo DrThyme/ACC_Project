@@ -42,36 +42,34 @@ python cw2.py
 3. Run some calculations, using the Web-UI
 
 
-## Examples
+## Modifying the code
 
-##### Get the mouse location and move it. 
-```JavaScript
-var ex = require("example");
-
-//Get the mouse position, returns an object with x and y. 
-var mouse=ex.getMousePos();
-console.log("Mouse is at x:" + mouse.x + " y:" + mouse.y);
-
-//Move the mouse down by 100 pixels.
-robot.moveMouse(mouse.x,mouse.y+100);
-
-//Left click!
-robot.mouseClick();
+##### The worker tasks can be changed in the file w_worker_tasks.py 
+```Python
+@celery.task
+def calc_lift_force(ang):
+#....
+# Your function
+#....
 ```
+##### And be called in utils.py 
 
 ##### Run some FizzBuzz:
-```JavaScript
-for (var i=1; i <= 20; i++)
-{
-    if (i % 15 == 0)
-        console.log("FizzBuzz");
-    else if (i % 3 == 0)
-        console.log("Fizz");
-    else if (i % 5 == 0)
-        console.log("Buzz");
-    else
-        console.log(i);
-}
+```Python
+@apps.route('/result')
+def start():
+#....
+# Do Stuff with input from the form in airfoil.html
+#....
+tasks = [calc_lift_force.s(angle) for angle in a_list]
+task_group = group(tasks)
+group_result = task_group()
+while (group_result.ready() == False):
+    time.sleep(2)
+res = group_result.get()
+#....
+# Return stuff
+#....
 ```
 
 ## Authors
