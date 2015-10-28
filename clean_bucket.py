@@ -8,7 +8,7 @@ config = {'user':os.environ['OS_USERNAME'],
 
 conn = swiftclient.client.Connection(auth_version=2, **config)
 
-bucket_name = "G1_Project_result"
+bucket_name = "gr1_res"
 
 # Clean up container in Swift
 (r, ol) = conn.get_container(bucket_name)
