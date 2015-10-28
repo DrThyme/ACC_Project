@@ -35,7 +35,7 @@ source setup.sh
 ##### Create your cluster (Note: this might take a while)
 ```bash
 python cw2.py
-# URL to flower dashboard and Web UI will be printed printed in the terminal.
+# URL to flower dashboard and Web UI will be printed in the terminal.
 ```
 > This requires that you have an account on the SMOG cloud (regionOne)
 
@@ -44,7 +44,7 @@ python cw2.py
 
 ## Modifying the code
 
-##### The worker tasks can be changed in the file w_worker_tasks.py 
+##### The worker tasks can be defined in the file w_worker_tasks.py 
 ```Python
 @celery.task
 def calc_lift_force(ang):
@@ -56,6 +56,9 @@ def calc_lift_force(ang):
 ```Python
 @apps.route('/result')
 def start():
+maxAngle = request.args['maxAngle']
+minAngle = request.args['minAngle']
+numSamples = request.args['numSamples']
 #....
 # Do Stuff with input from the form in airfoil.html
 #....
