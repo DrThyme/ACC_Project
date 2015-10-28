@@ -116,9 +116,7 @@ def start():
 
     resx = res + db_a_list
     resy = sorted(resx, key=lambda tup: tup[2])
-    print "sorted list of all:"
-    print resy
-    print "**** FOUND IN DATABSE: ****"
+  
     for i in db_a_list:
         print i
 
@@ -130,12 +128,14 @@ def start():
    
     title = {"text": 'Result plot'}
     xd = [str(c) for (a,b,c,d) in resy]
+    dls = [d for (a,b,c,d) in resy]
  
     xAxis = {"categories": xd}
     yAxis = {"title": {"text": 'Force'}}
+    utasks = str(len(a_list))
+    dbtasks = str(len(resx))
     
-    return render_template('result.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis,maxAngle=maxAngle,minAngle=minAngle,numSamples=numSamples,tot_time=tot_time)
-    
+    return render_template('result.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis,maxAngle=maxAngle,minAngle=minAngle,numSamples=numSamples,tot_time=tot_time,utasks=utasks,dbtasks=dbtasks,dls=dls)
     
     #return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples,tot_time=tot_time)
     

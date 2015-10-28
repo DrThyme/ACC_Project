@@ -9,6 +9,24 @@
     </head>
     <body>
         <h1>Results</h1>
+        
+                        <ul>
+                            
+                            <li>Max Angle: {{maxAngle}}</li>
+                            <li>Min Angle: {{minAngle}}</li>
+                            <li>Number of steps: {{numSamples}}</li>
+                            <li>Execution time: {{tot_time}}</li>
+                            <li>Created {{utasks}} new tasks</li>
+                            <li>Found {{dbtasks}} task results in the database</li>
+                        </ul>
+
+                        <p>DOWNLOAD LINKS:</p>
+                        <ul>
+                            {% for d in dls %}
+                            <li><a href="{{d}}">{{d}}</a></li>
+                            {% endfor %}
+                            
+                        </ul>
 <div id="{{ chartID | safe }}" class="chart" style="height: 100px; width: 500px"></div>
 		<script>
 			var chart_id = {{ chartID | safe }}
@@ -31,13 +49,6 @@
 	});
                          });</script>
 
-                        <ul>
-                            <p>Parameters:</p>
-                            <li>Max Angle: {{maxAngle}}</li>
-                            <li>Min Angle: {{minAngle}}</li>
-                            <li>Number of steps: {{numSamples}}</li>
-                            <li>Execution time: {{tot_time}}</li>
-                        </ul>
 
                         
     </body>
