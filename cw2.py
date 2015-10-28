@@ -59,12 +59,12 @@ def start_workers(bro_ip,ip_list):
         if ip == bro_ip:
                 
             worker_name = "brokerzon"
-            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" "+str(openstack_pw)+ " "+str(worker_name)+" "+str(openstack_usrname)
+            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" '"+str(openstack_pw)+"' "+str(worker_name)+" "+str(openstack_usrname)
             
             
         else:
             worker_name = "workerzon"+str(x)
-            cmd = 'cd /home/ubuntu/ACC_Project/;python parse_file.py ' + str(bro_ip)+' '+str(openstack_pw)+ ' '+str(worker_name)+' '+str(openstack_usrname)+';cd /home/ubuntu/ACC_Project/;export LC_ALL="en_US.utf-8";celery worker -l info --concurrency=1 -A worker_tasks &'
+            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" '"+str(openstack_pw)+"' "+str(worker_name)+" "+str(openstack_usrname)+";cd /home/ubuntu/ACC_Project/;export LC_ALL='en_US.utf-8';celery worker -l info --concurrency=1 -A worker_tasks &"
             
             x+=1
         try:
