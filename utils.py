@@ -70,7 +70,7 @@ def get_from_db(angle):
     x = db.get(str(angle))
     return x
 
-@apps.route('/', methods=['POST'])
+@apps.route('/result')
 def start():   
     maxAngle = request.form['maxAngle']
     minAngle = request.form['minAngle']
@@ -95,8 +95,7 @@ def start():
 
     
 
-        
-    start = time.time()  
+    start = time.time()
     print "The process have started!"
     print "Creating " + str(len(a_list)) +" tasks*******"
     tasks = [calc_lift_force.s(angle) for angle in a_list]
