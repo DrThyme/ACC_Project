@@ -11,9 +11,9 @@ import json
 from worker_tasks import calc_lift_force
 
 
-uname = "z"
-broker_ip = "x"
-passw = "y"
+uname = "U_NAME"
+broker_ip = "BROOKER_IP_TEMP"
+passw = "P_W"
 
 
 config = {'username':uname, 

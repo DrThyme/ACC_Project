@@ -4,7 +4,12 @@ import sys
 from random import randrange
 from novaclient.client import Client
 import paramiko
+"""
 
+uname = "U_NAME"
+broker_ip = "BROOKER_IP_TEMP"
+passw = "P_W"
+"""
 
 img_name = 'MOLNS_OpenStack_accpro4_1444644885'
 PRIV_KEY_PATH = os.environ['PRIV_KEY']
@@ -59,7 +64,7 @@ def start_workers(bro_ip,ip_list):
         if ip == bro_ip:
                 
             worker_name = "brokerzon"
-            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" '"+str(openstack_pw)+"' "+str(worker_name)+" "+str(openstack_usrname)
+            cmd = "cd /home/ubuntu/ACC_Project/;python parse_file.py " + str(bro_ip)+" '"+str(openstack_pw)+"' "+str(worker_name)+" "+str(openstack_usrname)+";python parse_file_2.py "+ str(bro_ip)+" '"+str(openstack_pw)+"' "+str(openstack_usrname)
             
             
         else:
