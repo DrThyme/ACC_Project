@@ -216,6 +216,13 @@ def start():
     yAxis = {"title": {"text": 'Force'}}
     utasks = str(len(a_list))
     dbtasks = str(len(db_a_list))
+
+    for s in servers:
+        try:
+            s.suspend()
+            print "server suspended!"
+        except:
+            pass
     
     return render_template('result.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis,maxAngle=maxAngle,minAngle=minAngle,numSamples=numSamples,tot_time=tot_time,utasks=utasks,dbtasks=dbtasks,dls=dls)
     
