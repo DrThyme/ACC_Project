@@ -189,8 +189,9 @@ def start():
             if i == (len(servers)-1):
                 break
             try:
-                s_auxx.append(nc.servers.find(name=s.name))
+               
                 s.resume()
+                s_auxx.append(nc.servers.find(name=s.name))
                 i += 1
                 print "server resumed!!!!!!!"
             except:
