@@ -182,6 +182,7 @@ def start():
     
     print "pushed_tasks: " +str(pushed_tasks)
     print "nr_of_workers: "+str(len(sb))
+    
     if pushed_tasks < len(sb):
         print "Resuming " +str(pushed_tasks) + " workers..."
         for n in range(0,pushed_tasks):
@@ -192,6 +193,7 @@ def start():
                 pass
     else:
         print "STARTING ALL WORKERS:"
+       
         for i in sb:
             try:
                 i.resume()
@@ -267,6 +269,7 @@ def start():
     for x in serx:
         print x.name + " STATUS: " +str(x.status) 
 
+    nrworkers = len(serx)
     print "Waiting for workers to finnish..."
     while (group_result.ready() == False):
         time.sleep(2)
@@ -307,7 +310,7 @@ def start():
         except:
             pass
     
-    return render_template('result.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis,maxAngle=maxAngle,minAngle=minAngle,numSamples=numSamples,tot_time=tot_time,utasks=utasks,dbtasks=dbtasks,dls=dls)
+    return render_template('result.html', chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis,maxAngle=maxAngle,minAngle=minAngle,numSamples=numSamples,tot_time=tot_time,utasks=utasks,dbtasks=dbtasks,dls=dls,nrworkers=nrworkers)
     
     #return render_template("result.html",arg1=maxAngle,arg2=minAngle,arg3=numSamples,tot_time=tot_time)
     
