@@ -165,15 +165,17 @@ def start():
         try:
             s.suspend()
             s_aux.append(nc.servers.find(name=s.name))
-            print "server suspended!"
+            print "server initially suspended!"
         except:
             print "Could not suspend server!"
+            s_aux.append(nc.servers.find(name=s.name))
             pass
     # END SUSPEND_ALL_SERVERS
 
 
     # START_SERVERS (nr_of_tasks)
     s_auxx = []
+    # s_aux should only have suspended instances
     if (pushed_tasks > (optimal_tasks_per_worker * len(servers))):
         print "Using all instances!"
         for s in s_aux:
@@ -181,7 +183,11 @@ def start():
                 s.resume()
                 s_auxx.append(nc.servers.find(name=s.name))
             except:
+                if s.status == 'ACTIVE':
+                    s_auxx.append(nc.servers.find(name=s.name))
+                
                 print "Could not resume server in resume_all!"
+                
                 pass
     else:
         i = 0
@@ -189,7 +195,6 @@ def start():
             if i == (len(servers)-1):
                 break
             try:
-               
                 s.resume()
                 s_auxx.append(nc.servers.find(name=s.name))
                 i += 1
@@ -240,6 +245,8 @@ def start():
     utasks = str(len(a_list))
     dbtasks = str(len(db_a_list))
 
+
+    # s_auxx should only have active instances
     for s in s_auxx:
         try:
             s.suspend()
