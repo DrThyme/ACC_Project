@@ -245,8 +245,17 @@ def start():
 
 
     # s_auxx should only have active instances
-    all_ser = [nc.servers.find(name=s.name) for s in servers]
-    for s in all_ser:
+    servers = []
+    active_names = []
+    for w in worker_names:
+        try:
+            server = nc.servers.find(name=w)
+            servers.append(server)
+            active_names.append(str(w))
+        except:
+            pass
+    
+    for s in servers:
         try:
             s.suspend()
             print "server finalisation suspended!"
