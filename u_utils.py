@@ -59,6 +59,24 @@ def my_form():
     return render_template("airfoil.html")
 
 
+def get_workers_with_status(stat,nc,names):
+    servers = []
+    active_names = []
+    for w in names:
+        try:
+            server = nc.servers.find(name=w)
+            if server.status == status
+            servers.append(server)
+            active_names.append(str(w))
+            
+        except:
+            pass
+    return servers
+    # END GET SERVERS
+
+
+    
+
 def check_db(angle):
     ''' check_db checks if the key 'angle' exists in the database 
 
@@ -141,8 +159,30 @@ def start():
     nr_of_workers = pushed_tasks / optimal_tasks_per_worker
     
     nc = Client('2',**config)
-
+    sa = get_workers_with_status('ACTIVE',nc,worker_names)
     # GET SERVERS (nc)
+    for s in sa:
+        print "FOUND SERVER WITH STATUS: " + s.status
+        try:
+            print "SUSPENDING INSTANCE"
+            s.suspend()
+        except:
+            pass
+
+    sa = get_workers_with_status('ACTIVE',nc,worker_names)
+    servers = sa
+    sb = get_workers_with_status('SUSPENDED',nc,worker_names)
+    print "FOUND SERVERS WITH SUSPENDED STATUS:"
+    for i in sb:
+        print i.status
+    
+    print "FOUND SERVERS WITH ACTIVE STATUS:"
+    for i in sa:
+        print i.status
+    
+
+    
+    """
     servers = []
     active_names = []
     for w in worker_names:
@@ -154,9 +194,11 @@ def start():
         except:
             pass
     # END GET SERVERS
+    """
 
 
     # SUSPEND_ALL_SERVERS (servers)
+    """
     s_aux = []
     print "WORKING WITH: " + str(len(servers)) + " servers"
     for s in servers:
@@ -169,32 +211,28 @@ def start():
             s_aux.append(nc.servers.find(name=s.name))
             pass
     # END SUSPEND_ALL_SERVERS
-
+    """
 
     # START_SERVERS (nr_of_tasks)
-    s_auxx = []
+  
     # s_aux should only have suspended instances
     if (pushed_tasks > (optimal_tasks_per_worker * len(servers))):
         print "Using all instances!"
-        for s in s_aux:
+        for s in sb:
             try:
                 s.resume()
-                s_auxx.append(nc.servers.find(name=s.name))
+                #s_auxx.append(nc.servers.find(name=s.name))
             except:
-                if s.status == 'ACTIVE':
-                    s_auxx.append(nc.servers.find(name=s.name))
-                
                 print "Could not resume server in resume_all!"
-                
                 pass
     else:
         i = 0
-        for s in s_aux:
+        for s in sb:
             if i == (len(servers)-1):
                 break
             try:
                 s.resume()
-                s_auxx.append(nc.servers.find(name=s.name))
+                #s_auxx.append(nc.servers.find(name=s.name))
                 i += 1
                 print "server resumed!!!!!!!"
             except:
@@ -206,7 +244,10 @@ def start():
             
     # END START_SERVERS
      
-
+    serx = get_workers_with_status('ACTIVE',nc,worker_names)
+    print "Have the following workers......:"
+    for x in serx:
+        print x.name
 
     
     tasks = [calc_lift_force.s(angle) for angle in a_list]
@@ -243,17 +284,9 @@ def start():
 
 
     # s_auxx should only have active instances
-    servers = []
-    active_names = []
-    for w in worker_names:
-        try:
-            server = nc.servers.find(name=w)
-            servers.append(server)
-            active_names.append(str(w))
-        except:
-            pass
+    sers = get_workers_with_status('ACTIVE',nc,worker_names)
     
-    for s in servers:
+    for s in sers:
         try:
             s.suspend()
             print "server finalisation suspended!"
