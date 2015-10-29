@@ -172,15 +172,6 @@ def start():
             pass
     # END SUSPEND_ALL_SERVERS
 
-    print "********** [server] STATUSES:"
-    for s in servers:
-        print s.status
-
-
-    print "********* [s_aux] STATUSES:"
-    b = [nc.servers.find(name=s.name)) for s in s_aux]
-    for s in b:
-        print s.status
 
     # START_SERVERS (nr_of_tasks)
     s_auxx = []
@@ -218,10 +209,6 @@ def start():
     # END START_SERVERS
      
 
-    print "********* [s_auxx] STATUSES:"
-    for s in s_auxx:
-        print s.status
-
 
     
     tasks = [calc_lift_force.s(angle) for angle in a_list]
@@ -258,7 +245,8 @@ def start():
 
 
     # s_auxx should only have active instances
-    for s in s_auxx:
+    all_ser = [nc.servers.find(name=s.name) for s in servers]
+    for s in all_ser:
         try:
             s.suspend()
             print "server finalisation suspended!"
