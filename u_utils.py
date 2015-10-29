@@ -164,7 +164,7 @@ def start():
     for s in sa:
         print "FOUND SERVER WITH STATUS: " + "NAME " +str(s.name) +" :" +s.status
 
-    sb = get_workers_with_status('SUSPENDED',nc,worker_names)
+    sb = get_workers_with_status('PAUSED',nc,worker_names)
     for s in sb:
         print "FOUND SERVER WITH STATUS: " + "NAME " +str(s.name) +" :" +s.status
 
@@ -188,7 +188,7 @@ def start():
         for n in range(0,pushed_tasks):
             s = sb[n]
             try:
-                s.resume()
+                s.unpause()
             except:
                 pass
     else:
@@ -196,7 +196,7 @@ def start():
        
         for i in sb:
             try:
-                i.resume()
+                i.unpause()
             except:
                 pass
     
@@ -273,6 +273,7 @@ def start():
     print "Waiting for workers to finnish..."
     while (group_result.ready() == False):
         time.sleep(2)
+        
     res = group_result.get() # (av_l, av_d, angle, dl_url)
  
     end = time.time()
@@ -305,7 +306,7 @@ def start():
     
     for s in sers:
         try:
-            s.suspend()
+            s.pause()
             print "Suspended: " + str(s.name)
         except:
             pass

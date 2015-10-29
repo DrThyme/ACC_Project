@@ -280,7 +280,7 @@ start_broker(str(iip))
 
 for (n,i) in ip_details:
     s = nc.servers.find(name=n)
-    s.suspend()
+    s.pause()
 
 
 print(chr(27) + "[2J")
