@@ -165,7 +165,7 @@ def start():
     # GET SERVERS (nc)
     for s in sa:
         print "FOUND SERVER WITH STATUS: " + "NAME " +str(s.name) +" :" +s.status
-
+    
     sb = get_workers_with_status('PAUSED',nc,worker_names)
     for s in sb:
         print "FOUND SERVER WITH STATUS: " + "NAME " +str(s.name) +" :" +s.status
@@ -173,8 +173,6 @@ def start():
     
     sa = get_workers_with_status('ACTIVE',nc,worker_names)
     servers = sa
-    
-
     
     start = time.time()
     print "LISTS::::::::"
@@ -269,10 +267,11 @@ def start():
     print "sleeping"
     time.sleep(10)
     
+    
     serx = get_workers_with_status('ACTIVE',nc,worker_names)
     print "Have the following workers......:"
-    for x in serx:
-        print x.name + " STATUS: " +str(x.status) 
+    #for x in serx:
+        #print x.name + " STATUS: " +str(x.status) 
 
     nrworkers = len(serx)
     print "Waiting for workers to finnish..."
