@@ -128,10 +128,13 @@ def start():
             db_a_list.append(x)
 
     
-
+    
     start = time.time()
     print "The process have started!"
     print "Creating " + str(len(a_list)) +" tasks*******"
+    for i in a_list:
+        print str(i)
+    
     
     pushed_tasks = len(a_list)
     optimal_tasks_per_worker = 1
