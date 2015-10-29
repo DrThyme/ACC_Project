@@ -172,6 +172,14 @@ def start():
             pass
     # END SUSPEND_ALL_SERVERS
 
+    print "********** [server] STATUSES:"
+    for s in servers:
+        print s.status
+
+
+    print "********* [s_aux] STATUSES:"
+    for s in s_aux:
+        print s.status
 
     # START_SERVERS (nr_of_tasks)
     s_auxx = []
@@ -209,7 +217,9 @@ def start():
     # END START_SERVERS
      
 
-    
+    print "********* [s_auxx] STATUSES:"
+    for s in s_auxx:
+        print s.status
 
 
     
