@@ -151,20 +151,30 @@ def start():
             print "SERVER added: " +str(w)
         except:
             pass
-        
+
+    print "WORKING WITH: " str(len(servers)) + " servers"
     for s in servers:
-        s.suspend()
-        print "server suspended!"
+        try:
+            s.suspend()
+            print "server suspended!"
+        except:
+            pass
 
     if pushed_tasks > optimal_tasks_per_worker*len(servers):
+        print "Using all instances!"
         for s in servers:
-            print "Using all instances!"
-            s.resume()
+            try:
+                s.resume()
+            except:
+                pass
     else:
-        i = 0:
+        i = 0
         while pushed_tasks > 0:
             ser = servers[i]
-            ser.resume()
+            try:
+                ser.resume()
+            except:
+                pass
             print "Resumed instance!"
             pushed_tasks -= optimal_tasks_per_worker
             i += 1
