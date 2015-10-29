@@ -143,38 +143,53 @@ def start():
     nr_of_workers = pushed_tasks / optimal_tasks_per_worker
     
     nc = Client('2',**config)
+
+    # GET SERVERS (nc)
     servers = []
+    active_names = []
     for w in worker_names:
         try:
             server = nc.servers.find(name=w)
             servers.append(server)
+            active_names.append(str(w))
             print "SERVER added: " +str(w)
         except:
             pass
+    # END GET SERVERS
 
+
+    # SUSPEND_ALL_SERVERS (servers)
+    s_aux = []
     print "WORKING WITH: " + str(len(servers)) + " servers"
     for s in servers:
         try:
             s.suspend()
+            s_aux.append(nc.servers.find(name=s.name))
             print "server suspended!"
         except:
             print "Could not suspend server!"
             pass
+    # END SUSPEND_ALL_SERVERS
 
+
+    # START_SERVERS (nr_of_tasks)
+    s_auxx = []
     if (pushed_tasks > (optimal_tasks_per_worker * len(servers))):
         print "Using all instances!"
-        for s in servers:
+        for s in s_aux:
             try:
                 s.resume()
+                s_auxx.append(nc.servers.find(name=s.name))
             except:
                 print "Could not resume server in resume_all!"
                 pass
     else:
         i = 0
-        for s in servers:
+        for s in s_aux:
             if i == (len(servers)-1):
                 break
             try:
+                s_auxx.append(nc.servers.find(name=s.name))
                 s.resume()
                 i += 1
                 print "server resumed!!!!!!!"
@@ -183,9 +198,9 @@ def start():
                 pass
             
             
-            pushed_tasks -= optimal_tasks_per_worker
-            i += 1
-        
+            
+            
+    # END START_SERVERS
      
 
     
@@ -224,7 +239,7 @@ def start():
     utasks = str(len(a_list))
     dbtasks = str(len(db_a_list))
 
-    for s in servers:
+    for s in s_auxx:
         try:
             s.suspend()
             print "server finalisation suspended!"
