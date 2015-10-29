@@ -9,6 +9,7 @@ import pickledb
 import time
 import json
 from worker_tasks import calc_lift_force
+from novaclient.client import Client
 
 
 uname = "U_NAME"
@@ -109,6 +110,7 @@ def get_from_db(angle):
 
 @apps.route('/result')
 def start():
+    worker_names = ["Group1-Worker-1","Group1-Worker-2","Group1-Worker-3","Group1-Worker-4","Group1-Worker-5","Group1-Worker-6","Group1-Worker-7","Group1-Worker-8"]
     maxAngle = request.args['maxAngle']
     minAngle = request.args['minAngle']
     numSamples = request.args['numSamples']
@@ -135,6 +137,44 @@ def start():
     start = time.time()
     print "The process have started!"
     print "Creating " + str(len(a_list)) +" tasks*******"
+    
+    pushed_tasks = len(a_list)
+    optimal_tasks_per_worker = 2
+    nr_of_workers = pushed_tasks / optimal_tasks_per_worker
+    
+    nc = Client('2',**config)
+    servers = []
+    for w in worker_names:
+        try:
+            server = nc.servers.find(name=w)
+            servers.append(server)
+            print "SERVER added: " +str(w)
+        except:
+            pass
+        
+    for s in servers:
+        s.suspend()
+        print "server suspended!"
+
+        if pushed_tasks > optimal_tasks_per_worker*len(servers):
+            for s in servers:
+                print "Using all instances!"
+                s.resume()
+        else:
+            i = 0:
+            while pushed_tasks > 0:
+                ser = servers[i]
+                ser.resume()
+                print "Resumed instance!"
+                pushed_tasks -= optimal_tasks_per_worker
+                i += 1
+        
+     
+
+    
+
+
+    
     tasks = [calc_lift_force.s(angle) for angle in a_list]
     task_group = group(tasks)
     group_result = task_group()
