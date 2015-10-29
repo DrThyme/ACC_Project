@@ -146,6 +146,8 @@ def start():
             db_a_list.append(x)
 
     
+
+    
     
     
     print "The process have started!"
@@ -156,7 +158,7 @@ def start():
     
     pushed_tasks = len(a_list)
     optimal_tasks_per_worker = 1
-    nr_of_workers = pushed_tasks / optimal_tasks_per_worker
+    
     
     nc = Client('2',**config)
     sa = get_workers_with_status('ACTIVE',nc,worker_names)
@@ -173,8 +175,11 @@ def start():
     servers = sa
     
 
-        
+    
     start = time.time()
+    print "LISTS::::::::"
+    print a_list
+    print db_a_list
     tasks = [calc_lift_force.s(angle) for angle in a_list]
     task_group = group(tasks)
     group_result = task_group()
