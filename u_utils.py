@@ -172,6 +172,13 @@ def start():
     sa = get_workers_with_status('ACTIVE',nc,worker_names)
     servers = sa
     
+
+        
+    start = time.time()
+    tasks = [calc_lift_force.s(angle) for angle in a_list]
+    task_group = group(tasks)
+    group_result = task_group()
+    print tasks
     
     print "pushed_tasks: " +str(pushed_tasks)
     print "nr_of_workers: "+str(len(sb))
@@ -259,12 +266,7 @@ def start():
     print "Have the following workers......:"
     for x in serx:
         print x.name + " STATUS: " +str(x.status) 
-    
-    start = time.time()
-    tasks = [calc_lift_force.s(angle) for angle in a_list]
-    task_group = group(tasks)
-    group_result = task_group()
-    print tasks
+
     print "Waiting for workers to finnish..."
     while (group_result.ready() == False):
         time.sleep(2)
