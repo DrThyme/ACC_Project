@@ -158,6 +158,7 @@ def start():
             s.suspend()
             print "server suspended!"
         except:
+            print "Could not suspend server!"
             pass
 
     if (pushed_tasks > (optimal_tasks_per_worker * len(servers))):
@@ -166,6 +167,7 @@ def start():
             try:
                 s.resume()
             except:
+                print "Could not resume server in resume_all!"
                 pass
     else:
         i = 0
@@ -225,7 +227,7 @@ def start():
     for s in servers:
         try:
             s.suspend()
-            print "server suspended!"
+            print "server finalisation suspended!"
         except:
             pass
     
