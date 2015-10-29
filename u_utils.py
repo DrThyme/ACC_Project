@@ -178,7 +178,8 @@ def start():
 
 
     print "********* [s_aux] STATUSES:"
-    for s in s_aux:
+    b = [nc.servers.find(name=s.name)) for s in s_aux]
+    for s in b:
         print s.status
 
     # START_SERVERS (nr_of_tasks)

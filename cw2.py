@@ -274,9 +274,15 @@ for i in range(100):
 print "\n*** Packages Installed!!! ***"
 
 
-    
+
 new_ip_list = start_workers(str(iip),wips)
 start_broker(str(iip))
+
+for (n,i) in ip_details:
+    s = nc.servers.find(name=n)
+    s.suspend()
+
+
 print(chr(27) + "[2J")
 print "================ Creation finished! ==========================="
 print "Group1-Broker:\t\t"+str(iip)
