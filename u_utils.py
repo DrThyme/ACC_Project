@@ -156,18 +156,18 @@ def start():
         s.suspend()
         print "server suspended!"
 
-        if pushed_tasks > optimal_tasks_per_worker*len(servers):
-            for s in servers:
-                print "Using all instances!"
-                s.resume()
-        else:
-            i = 0:
-            while pushed_tasks > 0:
-                ser = servers[i]
-                ser.resume()
-                print "Resumed instance!"
-                pushed_tasks -= optimal_tasks_per_worker
-                i += 1
+    if pushed_tasks > optimal_tasks_per_worker*len(servers):
+        for s in servers:
+            print "Using all instances!"
+            s.resume()
+    else:
+        i = 0:
+        while pushed_tasks > 0:
+            ser = servers[i]
+            ser.resume()
+            print "Resumed instance!"
+            pushed_tasks -= optimal_tasks_per_worker
+            i += 1
         
      
 
