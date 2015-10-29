@@ -65,9 +65,9 @@ def get_workers_with_status(stat,nc,names):
     for w in names:
         try:
             server = nc.servers.find(name=w)
-            if server.status == status
-            servers.append(server)
-            active_names.append(str(w))
+            if server.status == stat:
+                servers.append(server)
+                active_names.append(str(w))
             
         except:
             pass
@@ -147,7 +147,7 @@ def start():
 
     
     
-    start = time.time()
+    
     print "The process have started!"
     print "Creating " + str(len(a_list)) +" tasks*******"
     for i in a_list:
@@ -162,25 +162,19 @@ def start():
     sa = get_workers_with_status('ACTIVE',nc,worker_names)
     # GET SERVERS (nc)
     for s in sa:
-        print "FOUND SERVER WITH STATUS: " + s.status
-        try:
-            print "SUSPENDING INSTANCE"
-            s.suspend()
-        except:
-            pass
+        print "FOUND SERVER WITH STATUS: " + "NAME " +str(s.name) +" :" +s.status
 
+    sb = get_workers_with_status('SUSPENDED',nc,worker_names)
+    for s in sa:
+        print "FOUND SERVER WITH STATUS: " + "NAME " +str(s.name) +" :" +s.status
+
+        
     sa = get_workers_with_status('ACTIVE',nc,worker_names)
     servers = sa
-    sb = get_workers_with_status('SUSPENDED',nc,worker_names)
-    print "FOUND SERVERS WITH SUSPENDED STATUS:"
+    
+    print "STARTING ALL WORKERS:"
     for i in sb:
-        print i.status
-    
-    print "FOUND SERVERS WITH ACTIVE STATUS:"
-    for i in sa:
-        print i.status
-    
-
+        i.resume()
     
     """
     servers = []
@@ -214,7 +208,7 @@ def start():
     """
 
     # START_SERVERS (nr_of_tasks)
-  
+    """
     # s_aux should only have suspended instances
     if (pushed_tasks > (optimal_tasks_per_worker * len(servers))):
         print "Using all instances!"
@@ -241,18 +235,19 @@ def start():
             
             
             
-            
+    """ 
     # END START_SERVERS
      
     serx = get_workers_with_status('ACTIVE',nc,worker_names)
     print "Have the following workers......:"
     for x in serx:
         print x.name
-
     
+    start = time.time()
     tasks = [calc_lift_force.s(angle) for angle in a_list]
     task_group = group(tasks)
     group_result = task_group()
+    print tasks
     print "Waiting for workers to finnish..."
     while (group_result.ready() == False):
         time.sleep(2)
