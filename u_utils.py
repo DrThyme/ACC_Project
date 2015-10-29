@@ -165,22 +165,31 @@ def start():
         print "FOUND SERVER WITH STATUS: " + "NAME " +str(s.name) +" :" +s.status
 
     sb = get_workers_with_status('SUSPENDED',nc,worker_names)
-    for s in sa:
+    for s in sb:
         print "FOUND SERVER WITH STATUS: " + "NAME " +str(s.name) +" :" +s.status
 
-        
+    
     sa = get_workers_with_status('ACTIVE',nc,worker_names)
     servers = sa
-
+    
+    
+    print "pushed_tasks: " +str(pushed_tasks)
+    print "nr_of_workers: "+str(len(sb))
     if pushed_tasks < len(sb):
-        print "NOT RESUMING ALL WORKERS"
+        print "Resuming " +str(pushed_tasks) + " workers..."
         for n in range(0,pushed_tasks):
             s = sb[n]
-            s.resume()
+            try:
+                s.resume()
+            except:
+                pass
     else:
         print "STARTING ALL WORKERS:"
         for i in sb:
-            i.resume()
+            try:
+                i.resume()
+            except:
+                pass
     
     """
     servers = []
@@ -249,7 +258,7 @@ def start():
     serx = get_workers_with_status('ACTIVE',nc,worker_names)
     print "Have the following workers......:"
     for x in serx:
-        print x.name
+        print x.name + " STATUS: " +str(x.status) 
     
     start = time.time()
     tasks = [calc_lift_force.s(angle) for angle in a_list]
@@ -292,7 +301,7 @@ def start():
     for s in sers:
         try:
             s.suspend()
-            print "server finalisation suspended!"
+            print "Suspended: " + str(s.name)
         except:
             pass
     

@@ -37,7 +37,7 @@ def attach_ip(cli,ins):
             break
     else:
         new_ip = cli.floating_ips.create(getattr(cli.floating_ip_pools.list()[0],'name'))
-        print "Created IP: " +str(new_ip)
+        print "Created IP: " +str(new_ip.ip)
         floating_ip = getattr(new_ip, 'ip')
     try:
         ins.add_floating_ip(floating_ip)
