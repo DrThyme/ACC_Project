@@ -171,10 +171,16 @@ def start():
         
     sa = get_workers_with_status('ACTIVE',nc,worker_names)
     servers = sa
-    
-    print "STARTING ALL WORKERS:"
-    for i in sb:
-        i.resume()
+
+    if pushed_tasks < len(sb):
+        print "NOT RESUMING ALL WORKERS"
+        for n in range(0,pushed_tasks):
+            s = sb[n]
+            s.resume()
+    else:
+        print "STARTING ALL WORKERS:"
+        for i in sb:
+            i.resume()
     
     """
     servers = []
@@ -237,7 +243,9 @@ def start():
             
     """ 
     # END START_SERVERS
-     
+    print "sleeping"
+    time.sleep(10)
+    
     serx = get_workers_with_status('ACTIVE',nc,worker_names)
     print "Have the following workers......:"
     for x in serx:
