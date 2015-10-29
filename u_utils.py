@@ -139,7 +139,7 @@ def start():
     print "Creating " + str(len(a_list)) +" tasks*******"
     
     pushed_tasks = len(a_list)
-    optimal_tasks_per_worker = 2
+    optimal_tasks_per_worker = 1
     nr_of_workers = pushed_tasks / optimal_tasks_per_worker
     
     nc = Client('2',**config)
@@ -152,7 +152,7 @@ def start():
         except:
             pass
 
-    print "WORKING WITH: " str(len(servers)) + " servers"
+    print "WORKING WITH: " + str(len(servers)) + " servers"
     for s in servers:
         try:
             s.suspend()
@@ -160,7 +160,7 @@ def start():
         except:
             pass
 
-    if pushed_tasks > optimal_tasks_per_worker*len(servers):
+    if (pushed_tasks > (optimal_tasks_per_worker * len(servers))):
         print "Using all instances!"
         for s in servers:
             try:
@@ -169,13 +169,18 @@ def start():
                 pass
     else:
         i = 0
-        while pushed_tasks > 0:
-            ser = servers[i]
+        for s in servers:
+            if i == (len(servers)-1):
+                break
             try:
-                ser.resume()
+                s.resume()
+                i += 1
+                print "server resumed!!!!!!!"
             except:
+                print "ERROR: Could not resume..."
                 pass
-            print "Resumed instance!"
+            
+            
             pushed_tasks -= optimal_tasks_per_worker
             i += 1
         
