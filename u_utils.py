@@ -10,7 +10,7 @@ import time
 import json
 from worker_tasks import calc_lift_force
 from novaclient.client import Client
-
+import numpy as np
 
 uname = "U_NAME"
 broker_ip = "BROOKER_IP_TEMP"
@@ -39,19 +39,14 @@ def input_form_user(min_ang,max_ang,nr):
     max_angle = int(max_ang)
     nr_angles = int(nr)
 
-    incr_angle = (max_angle - min_angle) / nr_angles # 0.3
-    if incr_angle < 1:
-        incr_angle = 1
-    else:
-        incr_angle = int(incr_angle)
+    candx = np.linspace(min_angle,max_angle,nr_angles)
+    cand = []
+    for i in candx:
+        cand.append(int(i))
     
-    print "INCR_ANGLE: " +str(incr_angle)
-    i = min_angle
-    angle_list = []
-    while i < max_angle:
-        angle_list.append(i)
-        print "adding angle "+ str(i)
-        i += incr_angle
+    angle_list = list(set(cand))
+    print "ANGLES TO TEST:"
+    print angle_list
     return angle_list
 
 
