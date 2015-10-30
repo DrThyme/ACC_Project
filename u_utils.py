@@ -153,7 +153,7 @@ def start():
     print "The process have started!"
     print "Creating " + str(len(a_list)) +" tasks*******"
     for i in a_list:
-        print str(i)
+        #print str(i)
     
     
     pushed_tasks = len(a_list)
@@ -175,16 +175,16 @@ def start():
     servers = sa
     
     start = time.time()
-    print "LISTS::::::::"
-    print a_list
-    print db_a_list
+    #print "LISTS::::::::"
+    #print a_list
+    #print db_a_list
     tasks = [calc_lift_force.s(angle) for angle in a_list]
     task_group = group(tasks)
     group_result = task_group()
-    print tasks
+    #print tasks
     
-    print "pushed_tasks: " +str(pushed_tasks)
-    print "nr_of_workers: "+str(len(sb))
+    #print "pushed_tasks: " +str(pushed_tasks)
+    #print "nr_of_workers: "+str(len(sb))
     
     if pushed_tasks < len(sb):
         print "Resuming " +str(pushed_tasks) + " workers..."
@@ -311,7 +311,7 @@ def start():
     for s in sers:
         try:
             s.pause()
-            print "Suspended: " + str(s.name)
+            #print "Suspended: " + str(s.name)
         except:
             pass
     
