@@ -152,8 +152,8 @@ def start():
     
     print "The process have started!"
     print "Creating " + str(len(a_list)) +" tasks*******"
-    for i in a_list:
-        #print str(i)
+    
+    
     
     
     pushed_tasks = len(a_list)
@@ -293,7 +293,7 @@ def start():
     sd = [a for (a,b,c,d) in resy]
     sd2 = [b for (a,b,c,d) in resy]
  
-    series = [{"name": 'Avrage drag force', "data": sd}, {"name": 'Avrage Lift force', "data":  sd2}]
+    series = [{"name": 'Avrage Lift force', "data": sd}, {"name": 'Avrage Drag force', "data":  sd2}]
    
     title = {"text": 'Result plot'}
     xd = [str(c) for (a,b,c,d) in resy]
