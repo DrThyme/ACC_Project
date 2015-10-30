@@ -41,6 +41,15 @@ python cw2.py
 
 ##### Run some calculations, using the Web-UI
 
+#### Known Errors and limitations:
+Running multiple sequential calculations from the Web-UI  may cause
+the task queue to crash.
+
+Some parameters are set and can not be changed in the current
+implementation.
+
+
+
 
 ## Modifying the code
 
